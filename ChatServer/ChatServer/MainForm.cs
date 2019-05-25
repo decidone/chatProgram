@@ -84,7 +84,6 @@ namespace ChatServer
             if (clientList.ContainsKey(clientSocket))
             {
                 clientList.Remove(clientSocket);
-                string displayMessage = "From client : " + user_name + " : " + message;
                 DisplayText(">> Disconnected connection from client");
             }
 
