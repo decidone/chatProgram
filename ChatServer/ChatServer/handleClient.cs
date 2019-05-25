@@ -51,17 +51,20 @@ namespace ChatServer
                     //bytes = stream.Read(buffer, 0, buffer.Length);
                     //msg = Encoding.Unicode.GetString(buffer, 0, bytes);
                     //msg = msg.Substring(0, msg.IndexOf("$"));
-                    while (stream.Read(buffer, 0, Marshal.SizeOf(packet)) != 0)
+                    if (stream.Read(buffer, 0, Marshal.SizeOf(packet)) != 0)
                     {
                         unsafe
                         {
                             fixed (byte* fixed_buffer = buffer)
                             {
                                 Marshal.PtrToStructure((IntPtr)fixed_buffer, packet);
-                                OnReceived(packet.Name, "test");
+                                OnReceived("test", packet.Name);
+                            //break;
                             }
                         }
                     }
+                OnReceived("test2", packet.Name);
+                    //OnReceived(packet.Name, "ww"); 안돌아감
                     //OnReceived(msg, clientList[clientSocket].ToString());
                 }
             }
