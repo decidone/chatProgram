@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -32,24 +33,36 @@ namespace ChatServer
 
         private void doChat()
         {
+            //OnReceived("asd", "test"); 돌아감
             NetworkStream stream = null;
             try
             {
-                byte[] buffer = new byte[1024];
-                string msg = string.Empty;
-                int bytes = 0;
-                int MessageCount = 0;
-
+                //OnReceived("asd", "test"); 돌아감
+                //byte[] buffer = new byte[1024];
+                //string msg = string.Empty;
+                //int bytes = 0;
+                //int MessageCount = 0;
+                byte[] buffer = new byte[8092];
+                DataPacket packet = new DataPacket();
                 while (true)
                 {
-                    MessageCount++;
+                    //MessageCount++;
                     stream = clientSocket.GetStream();
-                    bytes = stream.Read(buffer, 0, buffer.Length);
-                    msg = Encoding.Unicode.GetString(buffer, 0, bytes);
-                    msg = msg.Substring(0, msg.IndexOf("$"));
-
-                    if (OnReceived != null)
-                        OnReceived(msg, clientList[clientSocket].ToString());
+                    //bytes = stream.Read(buffer, 0, buffer.Length);
+                    //msg = Encoding.Unicode.GetString(buffer, 0, bytes);
+                    //msg = msg.Substring(0, msg.IndexOf("$"));
+                    while (stream.Read(buffer, 0, Marshal.SizeOf(packet)) != 0)
+                    {
+                        unsafe
+                        {
+                            fixed (byte* fixed_buffer = buffer)
+                            {
+                                Marshal.PtrToStructure((IntPtr)fixed_buffer, packet);
+                                OnReceived(packet.Name, "test");
+                            }
+                        }
+                    }
+                    //OnReceived(msg, clientList[clientSocket].ToString());
                 }
             }
             catch (SocketException se)

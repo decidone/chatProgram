@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -42,8 +43,26 @@ namespace ChatClient
 
         private void btnSend_Click(object sender, EventArgs e)
         {
-            byte[] buffer = Encoding.Unicode.GetBytes(this.TB_Msg.Text + "$");
-            stream.Write(buffer, 0, buffer.Length);
+            DataPacket packet = new DataPacket();
+
+            packet.Name = this.TB_Msg.Text;
+            packet.Subject = "Asd";
+            packet.Grade = 31;
+            packet.Memo = "eew";
+            byte[] buffer = new byte[Marshal.SizeOf(packet)];
+
+            unsafe
+            {
+                fixed (byte* fixed_buffer = buffer)
+                {
+                    Marshal.StructureToPtr(packet, (IntPtr)fixed_buffer, false);
+                }
+            }
+
+            stream.Write(buffer, 0, Marshal.SizeOf(packet));
+            
+            //byte[] buffer = Encoding.Unicode.GetBytes(this.TB_Msg.Text + "$");
+            //stream.Write(buffer, 0, buffer.Length);
             stream.Flush();
         }
 
