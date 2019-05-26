@@ -10,28 +10,28 @@ using System.Threading.Tasks;
 
 namespace ChatServer
 {
-    class handleClient
+    class Controller
     {
-        TcpClient clientSocket = null;
+        TcpClient client = null;
         public Dictionary<TcpClient, string> clientList = null;
 
-        public void startClient(TcpClient clientSocket, Dictionary<TcpClient, string> clientList)
+        public void start(TcpClient client, Dictionary<TcpClient, string> clientList)
         {
-            this.clientSocket = clientSocket;
+            this.client = client;
             this.clientList = clientList;
 
-            Thread t_hanlder = new Thread(doChat);
-            t_hanlder.IsBackground = true;
-            t_hanlder.Start();
+            Thread tr = new Thread(runServe);
+            tr.IsBackground = true;
+            tr.Start();
         }
 
         public delegate void MessageDisplayHandler(string message, string user_name);
         public event MessageDisplayHandler OnReceived;
 
-        public delegate void DisconnectedHandler(TcpClient clientSocket);
+        public delegate void DisconnectedHandler(TcpClient client);
         public event DisconnectedHandler OnDisconnected;
 
-        private void doChat()
+        private void runServe()
         {
             //OnReceived("asd", "test"); 돌아감
             NetworkStream stream = null;
@@ -47,7 +47,7 @@ namespace ChatServer
                 while (true)
                 {
                     //MessageCount++;
-                    stream = clientSocket.GetStream();
+                    stream = client.GetStream();
                     //bytes = stream.Read(buffer, 0, buffer.Length);
                     //msg = Encoding.Unicode.GetString(buffer, 0, bytes);
                     //msg = msg.Substring(0, msg.IndexOf("$"));
@@ -59,11 +59,16 @@ namespace ChatServer
                             {
                                 Marshal.PtrToStructure((IntPtr)fixed_buffer, packet);
                                 OnReceived("test", packet.Name);
-                            //break;
+                                //break;
                             }
                         }
                     }
-                OnReceived("test2", packet.Name);
+                    stream.Flush();
+                    if (packet.Name.Equals("qwer"))
+                    {
+                        OnReceived("성공", packet.Name);
+                    }
+                    OnReceived("test2", packet.Name);
                     //OnReceived(packet.Name, "ww"); 안돌아감
                     //OnReceived(msg, clientList[clientSocket].ToString());
                 }
@@ -72,12 +77,12 @@ namespace ChatServer
             {
                 Trace.WriteLine(string.Format("doChat - SocketException : {0}", se.Message));
 
-                if (clientSocket != null)
+                if (client != null)
                 {
                     if (OnDisconnected != null)
-                        OnDisconnected(clientSocket);
+                        OnDisconnected(client);
 
-                    clientSocket.Close();
+                    client.Close();
                     stream.Close();
                 }
             }
@@ -85,12 +90,12 @@ namespace ChatServer
             {
                 Trace.WriteLine(string.Format("doChat - Exception : {0}", ex.Message));
 
-                if (clientSocket != null)
+                if (client != null)
                 {
                     if (OnDisconnected != null)
-                        OnDisconnected(clientSocket);
+                        OnDisconnected(client);
 
-                    clientSocket.Close();
+                    client.Close();
                     stream.Close();
                 }
             }

@@ -17,8 +17,7 @@ namespace ChatServer
     public partial class MainForm : Form
     {
         TcpListener server = null;
-        TcpClient clientSocket = null;
-        static int counter = 0;
+        TcpClient client = null;
 
         public Dictionary<TcpClient, string> clientList = new Dictionary<TcpClient, string>();
 
@@ -27,41 +26,40 @@ namespace ChatServer
             InitializeComponent();
 
             // socket start
-            Thread t = new Thread(InitSocket);
-            t.IsBackground = true;
-            t.Start();
+            Thread tr = new Thread(InitSocket);
+            tr.IsBackground = true;
+            tr.Start();
         }
 
         private void InitSocket()
         {
             server = new TcpListener(IPAddress.Any, 9999);
-            clientSocket = default(TcpClient);
+            client = default(TcpClient);
             server.Start();
-            DisplayText(">> Server Started");
+            Print(">> Server Started");
 
             while (true)
             {
                 try
                 {
-                    counter++;
-                    clientSocket = server.AcceptTcpClient();
-                    DisplayText(">> Accept connection from client");
+                    client = server.AcceptTcpClient();
+                    Print(">> Accept connection from client");
 
-                    NetworkStream stream = clientSocket.GetStream();
+                    NetworkStream stream = client.GetStream();
                     byte[] buffer = new byte[1024];
                     int bytes = stream.Read(buffer, 0, buffer.Length);
                     string user_name = Encoding.Unicode.GetString(buffer, 0, bytes);
                     user_name = user_name.Substring(0, user_name.IndexOf("$"));
 
-                    clientList.Add(clientSocket, user_name);
+                    clientList.Add(client, user_name);
 
                     // send message all user
                     SendMessageAll(user_name + " Joined ", "", false);
 
-                    handleClient h_client = new handleClient();
-                    h_client.OnReceived += new handleClient.MessageDisplayHandler(OnReceived);
-                    h_client.OnDisconnected += new handleClient.DisconnectedHandler(h_client_OnDisconnected);
-                    h_client.startClient(clientSocket, clientList);
+                    Controller ctr = new Controller();
+                    ctr.OnReceived += new Controller.MessageDisplayHandler(OnReceived);
+                    ctr.OnDisconnected += new Controller.DisconnectedHandler(h_client_OnDisconnected);
+                    ctr.start(client, clientList);
                 }
                 catch (SocketException se)
                 {
@@ -75,16 +73,16 @@ namespace ChatServer
                 }
             }
 
-            clientSocket.Close();
+            client.Close();
             server.Stop();
         }
 
-        void h_client_OnDisconnected(TcpClient clientSocket)
+        void h_client_OnDisconnected(TcpClient client)
         {
-            if (clientList.ContainsKey(clientSocket))
+            if (clientList.ContainsKey(client))
             {
-                clientList.Remove(clientSocket);
-                DisplayText(">> Disconnected connection from client");
+                clientList.Remove(client);
+                Print(">> Disconnected connection from client");
             }
 
         }
@@ -92,7 +90,7 @@ namespace ChatServer
         private void OnReceived(string message, string user_name)
         {
             string displayMessage = "From client : " + user_name + " : " + message;
-            DisplayText(displayMessage);
+            Print(displayMessage);
             SendMessageAll(message, user_name, true);
         }
 
@@ -120,17 +118,17 @@ namespace ChatServer
             }
         }
 
-        private void DisplayText(string text)
+        private void Print(string text)
         {
-            if (richTextBox1.InvokeRequired)
+            if (console.InvokeRequired)
             {
-                richTextBox1.BeginInvoke(new MethodInvoker(delegate
+                console.BeginInvoke(new MethodInvoker(delegate
                 {
-                    richTextBox1.AppendText(text + Environment.NewLine);
+                    console.AppendText(text + Environment.NewLine);
                 }));
             }
             else
-                richTextBox1.AppendText(text + Environment.NewLine);
+                console.AppendText(text + Environment.NewLine);
         }
     }
 }

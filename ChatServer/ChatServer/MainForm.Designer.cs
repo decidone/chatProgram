@@ -28,23 +28,23 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.console = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
             // 
-            // richTextBox1
+            // console
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(0, 0);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(362, 469);
-            this.richTextBox1.TabIndex = 0;
-            this.richTextBox1.Text = "";
+            this.console.Location = new System.Drawing.Point(0, 0);
+            this.console.Name = "console";
+            this.console.Size = new System.Drawing.Size(362, 469);
+            this.console.TabIndex = 0;
+            this.console.Text = "";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(362, 470);
-            this.Controls.Add(this.richTextBox1);
+            this.Controls.Add(this.console);
             this.Name = "MainForm";
             this.Text = "Form1";
             this.ResumeLayout(false);
@@ -53,7 +53,7 @@
 
         #endregion
 
-        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.RichTextBox console;
     }
 }
 
