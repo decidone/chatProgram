@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -59,7 +60,7 @@ namespace ChatServer
                     SendMessageAll(user_name + " Joined ", "", false);
 
                     handleClient h_client = new handleClient();
-                    h_client.OnReceived += new handleClient.MessageDisplayHandler(OnReceived);
+                    h_client.OnReceived += new handleClient.MessageDisplayHandler(ParseJson);
                     h_client.OnDisconnected += new handleClient.DisconnectedHandler(h_client_OnDisconnected);
                     h_client.startClient(clientSocket, clientList);
                 }
@@ -87,6 +88,19 @@ namespace ChatServer
                 DisplayText(">> Disconnected connection from client");
             }
 
+        }
+
+        private void ParseJson(string text)
+        {
+            try
+            {
+                JObject jobj = JObject.Parse(text);
+                DisplayText(jobj["Email"].ToString());
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
 
         private void OnReceived(string message, string user_name)

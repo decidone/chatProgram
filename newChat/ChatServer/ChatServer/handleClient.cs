@@ -24,7 +24,8 @@ namespace ChatServer
             t.Start();
         }
 
-        public delegate void MessageDisplayHandler(string message, string user_name);
+        //public delegate void MessageDisplayHandler(string message, string user_name);
+        public delegate void MessageDisplayHandler(string text);
         public event MessageDisplayHandler OnReceived;
 
         public delegate void DisconnectedHandler(TcpClient clientSocket);
@@ -49,7 +50,8 @@ namespace ChatServer
                     msg = msg.Substring(0, msg.IndexOf("$"));
 
                     if (OnReceived != null)
-                        OnReceived(msg, clientList[clientSocket].ToString());
+                        //OnReceived(msg, clientList[clientSocket].ToString());
+                        OnReceived(msg);
                 }
             }
             catch (SocketException se)

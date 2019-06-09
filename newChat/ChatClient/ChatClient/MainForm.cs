@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -42,7 +43,29 @@ namespace ChatClient
 
         private void btnSend_Click(object sender, EventArgs e)
         {
-            byte[] buffer = Encoding.Unicode.GetBytes(this.TB_Msg.Text + "$");
+            Account account = new Account
+            {
+                Email = "james@example.com",
+                Active = true,
+                CreatedDate = new DateTime(2013, 1, 20, 0, 0, 0, DateTimeKind.Utc),
+                Roles = new List<string>
+                {
+                    "User",
+                    "Admin"
+                }
+            };
+
+            string json = JsonConvert.SerializeObject(account, Formatting.Indented);
+            // {
+            //   "Email": "james@example.com",
+            //   "Active": true,
+            //   "CreatedDate": "2013-01-20T00:00:00Z",
+            //   "Roles": [
+            //     "User",
+            //     "Admin"
+            //   ]
+            // }
+            byte[] buffer = Encoding.Unicode.GetBytes(json + "$");
             stream.Write(buffer, 0, buffer.Length);
             stream.Flush();
         }
