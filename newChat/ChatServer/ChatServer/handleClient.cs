@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -11,12 +12,12 @@ namespace ChatServer
 {
     class handleClient
     {
-        TcpClient clientSocket = null;
+        TcpClient client = null;
         public Dictionary<TcpClient, string> clientList = null;
 
         public void startClient(TcpClient clientSocket, Dictionary<TcpClient, string> clientList)
         {
-            this.clientSocket = clientSocket;
+            this.client = clientSocket;
             this.clientList = clientList;
 
             Thread t = new Thread(doChat);
@@ -36,7 +37,7 @@ namespace ChatServer
             NetworkStream stream = null;
             try
             {
-                byte[] buffer = new byte[(int)clientSocket.ReceiveBufferSize];
+                byte[] buffer = new byte[(int)client.ReceiveBufferSize];
                 string msg = string.Empty;
                 int bytes = 0;
                 int MessageCount = 0;
@@ -44,26 +45,28 @@ namespace ChatServer
                 while (true)
                 {
                     MessageCount++;
-                    stream = clientSocket.GetStream();
-                    bytes = stream.Read(buffer, 0, (int)clientSocket.ReceiveBufferSize);
+                    stream = client.GetStream();
+                    bytes = stream.Read(buffer, 0, buffer.Length);
                     msg = Encoding.Unicode.GetString(buffer, 0, bytes);
                     msg = msg.Substring(0, msg.IndexOf("$"));
 
+                    JObject jobj = JObject.Parse(msg);
+                    string print = jobj["Roles"].ToString();
                     if (OnReceived != null)
                         //OnReceived(msg, clientList[clientSocket].ToString());
-                        OnReceived(msg);
+                        OnReceived(print);
                 }
             }
             catch (SocketException se)
             {
                 Trace.WriteLine(string.Format("doChat - SocketException : {0}", se.Message));
 
-                if (clientSocket != null)
+                if (client != null)
                 {
                     if (OnDisconnected != null)
-                        OnDisconnected(clientSocket);
+                        OnDisconnected(client);
 
-                    clientSocket.Close();
+                    client.Close();
                     stream.Close();
                 }
             }
@@ -71,12 +74,12 @@ namespace ChatServer
             {
                 Trace.WriteLine(string.Format("doChat - Exception : {0}", ex.Message));
 
-                if (clientSocket != null)
+                if (client != null)
                 {
                     if (OnDisconnected != null)
-                        OnDisconnected(clientSocket);
+                        OnDisconnected(client);
 
-                    clientSocket.Close();
+                    client.Close();
                     stream.Close();
                 }
             }

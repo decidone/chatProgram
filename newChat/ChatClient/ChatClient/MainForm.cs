@@ -15,7 +15,7 @@ namespace ChatClient
 {
     public partial class MainForm : Form
     {
-        TcpClient clientSocket = new TcpClient();
+        TcpClient client = new TcpClient();
         NetworkStream stream = default(NetworkStream);
         string message = string.Empty;
 
@@ -26,8 +26,8 @@ namespace ChatClient
 
         private void btnConnect_Click(object sender, EventArgs e)
         {
-            clientSocket.Connect("127.0.0.1", 9999);
-            stream = clientSocket.GetStream();
+            client.Connect("127.0.0.1", 9999);
+            stream = client.GetStream();
 
             message = "Connected to Chat Server";
             DisplayText(message);
@@ -36,9 +36,9 @@ namespace ChatClient
             stream.Write(buffer, 0, buffer.Length);
             stream.Flush();
 
-            Thread t_handler = new Thread(GetMessage);
-            t_handler.IsBackground = true;
-            t_handler.Start();
+            Thread tr = new Thread(GetMessage);
+            tr.IsBackground = true;
+            tr.Start();
         }
 
         private void btnSend_Click(object sender, EventArgs e)
@@ -67,9 +67,8 @@ namespace ChatClient
         {
             while (true)
             {
-                stream = clientSocket.GetStream();
-                int BUFFERSIZE = clientSocket.ReceiveBufferSize;
-                byte[] buffer = new byte[BUFFERSIZE];
+                stream = client.GetStream();
+                byte[] buffer = new byte[(int)client.ReceiveBufferSize];
                 int bytes = stream.Read(buffer, 0, buffer.Length);
 
                 string message = Encoding.Unicode.GetString(buffer, 0, bytes);

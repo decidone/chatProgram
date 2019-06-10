@@ -18,7 +18,7 @@ namespace ChatServer
     public partial class MainForm : Form
     {
         TcpListener server = null;
-        TcpClient clientSocket = null;
+        TcpClient client = null;
         static int counter = 0;
 
         public Dictionary<TcpClient, string> clientList = new Dictionary<TcpClient, string>();
@@ -36,7 +36,7 @@ namespace ChatServer
         private void InitSocket()
         {
             server = new TcpListener(IPAddress.Any, 9999);
-            clientSocket = default(TcpClient);
+            client = default(TcpClient);
             server.Start();
             DisplayText(">> Server Started");
 
@@ -45,24 +45,24 @@ namespace ChatServer
                 try
                 {
                     counter++;
-                    clientSocket = server.AcceptTcpClient();
+                    client = server.AcceptTcpClient();
                     DisplayText(">> Accept connection from client");
 
-                    NetworkStream stream = clientSocket.GetStream();
-                    byte[] buffer = new byte[1024];
+                    NetworkStream stream = client.GetStream();
+                    byte[] buffer = new byte[(int)client.ReceiveBufferSize];
                     int bytes = stream.Read(buffer, 0, buffer.Length);
                     string user_name = Encoding.Unicode.GetString(buffer, 0, bytes);
                     user_name = user_name.Substring(0, user_name.IndexOf("$"));
 
-                    clientList.Add(clientSocket, user_name);
+                    clientList.Add(client, user_name);
 
                     // send message all user
                     SendMessageAll(user_name + " Joined ", "", false);
 
                     handleClient h_client = new handleClient();
-                    h_client.OnReceived += new handleClient.MessageDisplayHandler(ParseJson);
+                    h_client.OnReceived += new handleClient.MessageDisplayHandler(OnReceived);
                     h_client.OnDisconnected += new handleClient.DisconnectedHandler(h_client_OnDisconnected);
-                    h_client.startClient(clientSocket, clientList);
+                    h_client.startClient(client, clientList);
                 }
                 catch (SocketException se)
                 {
@@ -76,7 +76,7 @@ namespace ChatServer
                 }
             }
 
-            clientSocket.Close();
+            client.Close();
             server.Stop();
         }
 
@@ -89,27 +89,13 @@ namespace ChatServer
             }
 
         }
-
-        private void ParseJson(string text)
+        
+        private void OnReceived(string text)
         {
-            try
-            {
-                Trace.WriteLine("asd");
-                JObject jobj = JObject.Parse(text);
-                DisplayText(jobj["Roles"].ToString());
-                
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
-        }
-
-        private void OnReceived(string message, string user_name)
-        {
-            string displayMessage = "From client : " + user_name + " : " + message;
-            DisplayText(displayMessage);
-            SendMessageAll(message, user_name, true);
+            //string displayMessage = "From client : " + user_name + " : " + message;
+            //DisplayText(displayMessage);
+            //SendMessageAll(message, user_name, true);
+            DisplayText(text);
         }
 
         public void SendMessageAll(string message, string user_name, bool flag)
