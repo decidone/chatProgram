@@ -36,7 +36,7 @@ namespace ChatServer
             NetworkStream stream = null;
             try
             {
-                byte[] buffer = new byte[1024];
+                byte[] buffer = new byte[(int)clientSocket.ReceiveBufferSize];
                 string msg = string.Empty;
                 int bytes = 0;
                 int MessageCount = 0;
@@ -45,7 +45,7 @@ namespace ChatServer
                 {
                     MessageCount++;
                     stream = clientSocket.GetStream();
-                    bytes = stream.Read(buffer, 0, buffer.Length);
+                    bytes = stream.Read(buffer, 0, (int)clientSocket.ReceiveBufferSize);
                     msg = Encoding.Unicode.GetString(buffer, 0, bytes);
                     msg = msg.Substring(0, msg.IndexOf("$"));
 

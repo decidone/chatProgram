@@ -54,20 +54,13 @@ namespace ChatClient
                     "Admin"
                 }
             };
-
             string json = JsonConvert.SerializeObject(account, Formatting.Indented);
-            // {
-            //   "Email": "james@example.com",
-            //   "Active": true,
-            //   "CreatedDate": "2013-01-20T00:00:00Z",
-            //   "Roles": [
-            //     "User",
-            //     "Admin"
-            //   ]
-            // }
+            //string json = "{\"Email\": \"asd\"}";
+            
             byte[] buffer = Encoding.Unicode.GetBytes(json + "$");
             stream.Write(buffer, 0, buffer.Length);
             stream.Flush();
+
         }
 
         private void GetMessage()

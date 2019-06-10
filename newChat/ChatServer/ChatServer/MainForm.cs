@@ -94,8 +94,10 @@ namespace ChatServer
         {
             try
             {
+                Trace.WriteLine("asd");
                 JObject jobj = JObject.Parse(text);
-                DisplayText(jobj["Email"].ToString());
+                DisplayText(jobj["Roles"].ToString());
+                
             }
             catch (Exception ex)
             {
