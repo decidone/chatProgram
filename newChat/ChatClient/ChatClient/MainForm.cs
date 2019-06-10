@@ -17,28 +17,42 @@ namespace ChatClient
     {
         TcpClient client = new TcpClient();
         NetworkStream stream = default(NetworkStream);
-        string message = string.Empty;
+        //string message = string.Empty;
 
         public MainForm()
         {
             InitializeComponent();
-        }
 
-        private void btnConnect_Click(object sender, EventArgs e)
-        {
             client.Connect("127.0.0.1", 9999);
             stream = client.GetStream();
 
-            message = "Connected to Chat Server";
+            string message = "Connected to Chat Server";
             DisplayText(message);
 
-            byte[] buffer = Encoding.Unicode.GetBytes(this.TB_Name.Text + "$");
+            byte[] buffer = Encoding.Unicode.GetBytes("asd" + "$");
             stream.Write(buffer, 0, buffer.Length);
             stream.Flush();
 
             Thread tr = new Thread(GetMessage);
             tr.IsBackground = true;
             tr.Start();
+        }
+
+        private void btnConnect_Click(object sender, EventArgs e)
+        {
+            //client.Connect("127.0.0.1", 9999);
+            //stream = client.GetStream();
+
+            //string message = "Connected to Chat Server";
+            //DisplayText(message);
+
+            //byte[] buffer = Encoding.Unicode.GetBytes(this.TB_Name.Text + "$");
+            //stream.Write(buffer, 0, buffer.Length);
+            //stream.Flush();
+
+            //Thread tr = new Thread(GetMessage);
+            //tr.IsBackground = true;
+            //tr.Start();
         }
 
         private void btnSend_Click(object sender, EventArgs e)
@@ -63,7 +77,6 @@ namespace ChatClient
             byte[] buffer = Encoding.Unicode.GetBytes(json + "$");
             stream.Write(buffer, 0, buffer.Length);
             stream.Flush();
-
         }
 
         private void GetMessage()

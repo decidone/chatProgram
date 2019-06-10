@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChatClient
+namespace ChatServer
 {
-    class DataPacket
+    public class DataPacket
     {
         public string Work { get; set; }
         public string Id { get; set; }

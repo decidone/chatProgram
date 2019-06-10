@@ -20,9 +20,9 @@ namespace ChatServer
             this.client = clientSocket;
             this.clientList = clientList;
 
-            Thread t = new Thread(doChat);
-            t.IsBackground = true;
-            t.Start();
+            Thread tr = new Thread(run);
+            tr.IsBackground = true;
+            tr.Start();
         }
 
         //public delegate void MessageDisplayHandler(string message, string user_name);
@@ -32,47 +32,47 @@ namespace ChatServer
         public delegate void DisconnectedHandler(TcpClient clientSocket);
         public event DisconnectedHandler OnDisconnected;
 
-        private void doChat()
+        private void run()
         {
             NetworkStream stream = null;
             try
             {
                 byte[] buffer = new byte[(int)client.ReceiveBufferSize];
-                string msg = string.Empty;
+                string jsonData = string.Empty;
                 int bytes = 0;
-                int MessageCount = 0;
 
                 while (true)
                 {
-                    MessageCount++;
                     stream = client.GetStream();
                     bytes = stream.Read(buffer, 0, buffer.Length);
-                    msg = Encoding.Unicode.GetString(buffer, 0, bytes);
-                    msg = msg.Substring(0, msg.IndexOf("$"));
+                    jsonData = Encoding.Unicode.GetString(buffer, 0, bytes);
+                    jsonData = jsonData.Substring(0, jsonData.IndexOf("$"));
 
-                    JObject jobj = JObject.Parse(msg);
-                    string print = jobj["Work"].ToString();
-                    if (OnReceived != null)
-                        //OnReceived(msg, clientList[clientSocket].ToString());
-                        OnReceived(print);
+                    JObject jobj = JObject.Parse(jsonData);
+                    
+                    string print = "Work = " + jobj["Work"].ToString();
+                    OnReceived(print);
+
+                    if (jobj["Work"].ToString() == "login")
+                        login(jobj);
                 }
             }
-            catch (SocketException se)
-            {
-                Trace.WriteLine(string.Format("doChat - SocketException : {0}", se.Message));
+            //catch (SocketException se)
+            //{
+            //    Trace.WriteLine(string.Format("doChat - SocketException : {0}", se.Message));
 
-                if (client != null)
-                {
-                    if (OnDisconnected != null)
-                        OnDisconnected(client);
+            //    if (client != null)
+            //    {
+            //        if (OnDisconnected != null)
+            //            OnDisconnected(client);
 
-                    client.Close();
-                    stream.Close();
-                }
-            }
+            //        client.Close();
+            //        stream.Close();
+            //    }
+            //}
             catch (Exception ex)
             {
-                Trace.WriteLine(string.Format("doChat - Exception : {0}", ex.Message));
+                Trace.WriteLine(string.Format(ex.Message));
 
                 if (client != null)
                 {
@@ -84,6 +84,12 @@ namespace ChatServer
                 }
             }
         }
-
+        private void login(JObject jobj)
+        {
+            if(jobj["Id"].ToString() == "asdww")
+            {
+                OnReceived("로그인 성공");
+            }
+        }
     }
 }
