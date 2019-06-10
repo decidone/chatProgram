@@ -43,18 +43,21 @@ namespace ChatClient
 
         private void btnSend_Click(object sender, EventArgs e)
         {
-            Account account = new Account
+            DataPacket dp = new DataPacket
             {
-                Email = "james@example.com",
-                Active = true,
-                CreatedDate = new DateTime(2013, 1, 20, 0, 0, 0, DateTimeKind.Utc),
-                Roles = new List<string>
-                {
-                    "User",
-                    "Admin"
-                }
+                Work = "login",
+                Id = "asdww",
+                Password = "pw"
+                //Email = "james@example.com",
+                //Active = true,
+                //CreatedDate = new DateTime(2013, 1, 20, 0, 0, 0, DateTimeKind.Utc),
+                //Roles = new List<string>
+                //{
+                //    "User",
+                //    "Admin"
+                //}
             };
-            string json = JsonConvert.SerializeObject(account, Formatting.Indented);
+            string json = JsonConvert.SerializeObject(dp, Formatting.Indented);
             //string json = "{\"Email\": \"asd\"}";
             
             byte[] buffer = Encoding.Unicode.GetBytes(json + "$");

@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace ChatClient
 {
-    class Account
+    class DataPacket
     {
+        public string Work { get; set; }
+        public string Id { get; set; }
+        public string Password { get; set; }
         public string Email { get; set; }
         public bool Active { get; set; }
         public DateTime CreatedDate { get; set; }

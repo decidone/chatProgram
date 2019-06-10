@@ -51,7 +51,7 @@ namespace ChatServer
                     msg = msg.Substring(0, msg.IndexOf("$"));
 
                     JObject jobj = JObject.Parse(msg);
-                    string print = jobj["Roles"].ToString();
+                    string print = jobj["Work"].ToString();
                     if (OnReceived != null)
                         //OnReceived(msg, clientList[clientSocket].ToString());
                         OnReceived(print);
