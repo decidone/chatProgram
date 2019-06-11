@@ -21,7 +21,8 @@ namespace ChatServer
         TcpClient client = null;
         static int counter = 0;
 
-        public Dictionary<TcpClient, string> clientList = new Dictionary<TcpClient, string>();
+        //public Dictionary<TcpClient, string> clientList = new Dictionary<TcpClient, string>();
+        public List<TcpClient> clientList = new List<TcpClient>();
 
         public MainForm()
         {
@@ -46,23 +47,25 @@ namespace ChatServer
                 {
                     counter++;
                     client = server.AcceptTcpClient();
+
+                    //나중에 로그인 생기면 이것도 필요없을듯
                     DisplayText(">> Accept connection from client");
 
-                    NetworkStream stream = client.GetStream();
-                    byte[] buffer = new byte[(int)client.ReceiveBufferSize];
-                    int bytes = stream.Read(buffer, 0, buffer.Length);
-                    string user_name = Encoding.Unicode.GetString(buffer, 0, bytes);
-                    user_name = user_name.Substring(0, user_name.IndexOf("$"));
+                    //NetworkStream stream = client.GetStream();
+                    //byte[] buffer = new byte[(int)client.ReceiveBufferSize];
+                    //int bytes = stream.Read(buffer, 0, buffer.Length);
+                    //string user_name = Encoding.Unicode.GetString(buffer, 0, bytes);
+                    //user_name = user_name.Substring(0, user_name.IndexOf("$"));
 
-                    clientList.Add(client, user_name);
+                    clientList.Add(client);
 
-                    // send message all user
-                    SendMessageAll(user_name + " Joined ", "", false);
+                    //// send message all user
+                    //SendMessageAll(user_name + " Joined ", "", false);
 
                     handleClient h_client = new handleClient();
                     h_client.OnReceived += new handleClient.MessageDisplayHandler(OnReceived);
                     h_client.OnDisconnected += new handleClient.DisconnectedHandler(h_client_OnDisconnected);
-                    h_client.startClient(client, clientList);
+                    h_client.startClient(client);
                 }
                 catch (SocketException se)
                 {
@@ -82,7 +85,7 @@ namespace ChatServer
 
         void h_client_OnDisconnected(TcpClient clientSocket)
         {
-            if (clientList.ContainsKey(clientSocket))
+            if (clientList.Contains(clientSocket))
             {
                 clientList.Remove(clientSocket);
                 DisplayText(">> Disconnected connection from client");
@@ -102,9 +105,9 @@ namespace ChatServer
         {
             foreach (var pair in clientList)
             {
-                Trace.WriteLine(string.Format("tcpclient : {0} user_name : {1}", pair.Key, pair.Value));
+                Trace.WriteLine(string.Format("tcpclient : {0}", pair));
 
-                TcpClient client = pair.Key as TcpClient;
+                TcpClient client = pair as TcpClient;
                 NetworkStream stream = client.GetStream();
                 byte[] buffer = null;
 

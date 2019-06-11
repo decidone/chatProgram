@@ -30,3 +30,4 @@ C:\Users\Jun\Documents\chatProgram\newChat\ChatClient\ChatClient\obj\Debug\ChatC
 C:\Users\Jun\Documents\chatProgram\newChat\ChatClient\ChatClient\obj\Debug\ChatClient.csproj.CopyComplete
 C:\Users\Jun\Documents\chatProgram\newChat\ChatClient\ChatClient\obj\Debug\ChatClient.exe
 C:\Users\Jun\Documents\chatProgram\newChat\ChatClient\ChatClient\obj\Debug\ChatClient.pdb
+C:\Users\Jun\Documents\chatProgram\newChat\ChatClient\ChatClient\obj\Debug\ChatClient.Register.resources

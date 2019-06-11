@@ -15,9 +15,10 @@ namespace ChatClient
 {
     public partial class MainForm : Form
     {
-        TcpClient client = new TcpClient();
+        public static TcpClient client = new TcpClient();
         NetworkStream stream = default(NetworkStream);
         //string message = string.Empty;
+        Thread tr;
 
         public MainForm()
         {
@@ -26,36 +27,19 @@ namespace ChatClient
             client.Connect("127.0.0.1", 9999);
             stream = client.GetStream();
 
-            string message = "Connected to Chat Server";
-            DisplayText(message);
+            //string message = "Connected to Chat Server";
+            //DisplayText(message);
 
-            byte[] buffer = Encoding.Unicode.GetBytes("asd" + "$");
-            stream.Write(buffer, 0, buffer.Length);
-            stream.Flush();
+            //byte[] buffer = Encoding.Unicode.GetBytes("asd" + "$");
+            //stream.Write(buffer, 0, buffer.Length);
+            //stream.Flush();
 
-            Thread tr = new Thread(GetMessage);
+            tr = new Thread(GetMessage);
             tr.IsBackground = true;
             tr.Start();
         }
 
-        private void btnConnect_Click(object sender, EventArgs e)
-        {
-            //client.Connect("127.0.0.1", 9999);
-            //stream = client.GetStream();
-
-            //string message = "Connected to Chat Server";
-            //DisplayText(message);
-
-            //byte[] buffer = Encoding.Unicode.GetBytes(this.TB_Name.Text + "$");
-            //stream.Write(buffer, 0, buffer.Length);
-            //stream.Flush();
-
-            //Thread tr = new Thread(GetMessage);
-            //tr.IsBackground = true;
-            //tr.Start();
-        }
-
-        private void btnSend_Click(object sender, EventArgs e)
+        private void btnLogin_Click(object sender, EventArgs e)
         {
             DataPacket dp = new DataPacket
             {
@@ -73,10 +57,32 @@ namespace ChatClient
             };
             string json = JsonConvert.SerializeObject(dp, Formatting.Indented);
             //string json = "{\"Email\": \"asd\"}";
-            
+
             byte[] buffer = Encoding.Unicode.GetBytes(json + "$");
             stream.Write(buffer, 0, buffer.Length);
             stream.Flush();
+            //client.Connect("127.0.0.1", 9999);
+            //stream = client.GetStream();
+
+            //string message = "Connected to Chat Server";
+            //DisplayText(message);
+
+            //byte[] buffer = Encoding.Unicode.GetBytes(this.TB_Name.Text + "$");
+            //stream.Write(buffer, 0, buffer.Length);
+            //stream.Flush();
+
+            //Thread tr = new Thread(GetMessage);
+            //tr.IsBackground = true;
+            //tr.Start();
+        }
+
+        private void btnRegister_Click(object sender, EventArgs e)
+        {
+            tr.Abort(); // 스레드 종료
+            this.Visible = false; // 현재 폼 안보이게 하기
+            Register frm = new Register(); // 새 폼 생성
+            frm.Owner = this; // 새 폼의 오너를 현재 폼으로
+            frm.Show(); // 새폼 보여 주 기 
         }
 
         private void GetMessage()
@@ -87,22 +93,22 @@ namespace ChatClient
                 byte[] buffer = new byte[(int)client.ReceiveBufferSize];
                 int bytes = stream.Read(buffer, 0, buffer.Length);
 
-                string message = Encoding.Unicode.GetString(buffer, 0, bytes);
-                DisplayText(message);
+                //string message = Encoding.Unicode.GetString(buffer, 0, bytes);
+                //DisplayText(message);
             }
         }
 
-        private void DisplayText(string text)
-        {
-            if (richTextBox1.InvokeRequired)
-            {
-                richTextBox1.BeginInvoke(new MethodInvoker(delegate
-                {
-                    richTextBox1.AppendText(text + Environment.NewLine);
-                }));
-            }
-            else
-                richTextBox1.AppendText(text + Environment.NewLine);
-        }
+        //private void DisplayText(string text)
+        //{
+        //    if (richTextBox1.InvokeRequired)
+        //    {
+        //        richTextBox1.BeginInvoke(new MethodInvoker(delegate
+        //        {
+        //            richTextBox1.AppendText(text + Environment.NewLine);
+        //        }));
+        //    }
+        //    else
+        //        richTextBox1.AppendText(text + Environment.NewLine);
+        //}
     }
 }
