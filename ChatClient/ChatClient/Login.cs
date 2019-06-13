@@ -13,14 +13,14 @@ using System.Windows.Forms;
 
 namespace ChatClient
 {
-    public partial class MainForm : Form
+    public partial class Login : Form
     {
         public static TcpClient client = new TcpClient();
         NetworkStream stream = default(NetworkStream);
         //string message = string.Empty;
         Thread tr;
 
-        public MainForm()
+        public Login()
         {
             InitializeComponent();
 

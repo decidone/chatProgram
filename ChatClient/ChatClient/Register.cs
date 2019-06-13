@@ -15,13 +15,14 @@ namespace ChatClient
     public partial class Register : Form
     {
         //TcpClient client = MainForm.client;
-        NetworkStream stream = MainForm.client.GetStream();
+        NetworkStream stream = Login.client.GetStream();
         public Register()
         {
             InitializeComponent();
             FormClosing += new FormClosingEventHandler(closing);
         }
 
+        // 종료시 프로그램 전체 종료
         private void closing(object sender, FormClosingEventArgs e)
         {
             Application.Exit();

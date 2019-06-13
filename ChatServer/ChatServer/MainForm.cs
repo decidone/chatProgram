@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -18,17 +19,19 @@ namespace ChatServer
     {
         TcpListener server = null;
         TcpClient client = null;
+        static int counter = 0;
 
-        public Dictionary<TcpClient, string> clientList = new Dictionary<TcpClient, string>();
+        //public Dictionary<TcpClient, string> clientList = new Dictionary<TcpClient, string>();
+        public List<TcpClient> clientList = new List<TcpClient>();
 
         public MainForm()
         {
             InitializeComponent();
 
             // socket start
-            Thread tr = new Thread(InitSocket);
-            tr.IsBackground = true;
-            tr.Start();
+            Thread t = new Thread(InitSocket);
+            t.IsBackground = true;
+            t.Start();
         }
 
         private void InitSocket()
@@ -36,30 +39,33 @@ namespace ChatServer
             server = new TcpListener(IPAddress.Any, 9999);
             client = default(TcpClient);
             server.Start();
-            Print(">> Server Started");
+            DisplayText(">> Server Started");
 
             while (true)
             {
                 try
                 {
+                    counter++;
                     client = server.AcceptTcpClient();
-                    Print(">> Accept connection from client");
 
-                    NetworkStream stream = client.GetStream();
-                    byte[] buffer = new byte[1024];
-                    int bytes = stream.Read(buffer, 0, buffer.Length);
-                    string user_name = Encoding.Unicode.GetString(buffer, 0, bytes);
-                    user_name = user_name.Substring(0, user_name.IndexOf("$"));
+                    //나중에 로그인 생기면 이것도 필요없을듯
+                    DisplayText(">> Accept connection from client");
 
-                    clientList.Add(client, user_name);
+                    //NetworkStream stream = client.GetStream();
+                    //byte[] buffer = new byte[(int)client.ReceiveBufferSize];
+                    //int bytes = stream.Read(buffer, 0, buffer.Length);
+                    //string user_name = Encoding.Unicode.GetString(buffer, 0, bytes);
+                    //user_name = user_name.Substring(0, user_name.IndexOf("$"));
 
-                    // send message all user
-                    SendMessageAll(user_name + " Joined ", "", false);
+                    clientList.Add(client);
 
-                    Controller ctr = new Controller();
-                    ctr.OnReceived += new Controller.MessageDisplayHandler(OnReceived);
-                    ctr.OnDisconnected += new Controller.DisconnectedHandler(h_client_OnDisconnected);
-                    ctr.start(client, clientList);
+                    //// send message all user
+                    //SendMessageAll(user_name + " Joined ", "", false);
+
+                    handleClient h_client = new handleClient();
+                    h_client.OnReceived += new handleClient.MessageDisplayHandler(OnReceived);
+                    h_client.OnDisconnected += new handleClient.DisconnectedHandler(h_client_OnDisconnected);
+                    h_client.startClient(client);
                 }
                 catch (SocketException se)
                 {
@@ -77,30 +83,31 @@ namespace ChatServer
             server.Stop();
         }
 
-        void h_client_OnDisconnected(TcpClient client)
+        void h_client_OnDisconnected(TcpClient clientSocket)
         {
-            if (clientList.ContainsKey(client))
+            if (clientList.Contains(clientSocket))
             {
-                clientList.Remove(client);
-                Print(">> Disconnected connection from client");
+                clientList.Remove(clientSocket);
+                DisplayText(">> Disconnected connection from client");
             }
 
         }
-
-        private void OnReceived(string message, string user_name)
+        
+        private void OnReceived(string text)
         {
-            string displayMessage = "From client : " + user_name + " : " + message;
-            Print(displayMessage);
-            SendMessageAll(message, user_name, true);
+            //string displayMessage = "From client : " + user_name + " : " + message;
+            //DisplayText(displayMessage);
+            //SendMessageAll(message, user_name, true);
+            DisplayText(text);
         }
 
         public void SendMessageAll(string message, string user_name, bool flag)
         {
             foreach (var pair in clientList)
             {
-                Trace.WriteLine(string.Format("tcpclient : {0} user_name : {1}", pair.Key, pair.Value));
+                Trace.WriteLine(string.Format("tcpclient : {0}", pair));
 
-                TcpClient client = pair.Key as TcpClient;
+                TcpClient client = pair as TcpClient;
                 NetworkStream stream = client.GetStream();
                 byte[] buffer = null;
 
@@ -118,17 +125,17 @@ namespace ChatServer
             }
         }
 
-        private void Print(string text)
+        private void DisplayText(string text)
         {
-            if (console.InvokeRequired)
+            if (richTextBox1.InvokeRequired)
             {
-                console.BeginInvoke(new MethodInvoker(delegate
+                richTextBox1.BeginInvoke(new MethodInvoker(delegate
                 {
-                    console.AppendText(text + Environment.NewLine);
+                    richTextBox1.AppendText(text + Environment.NewLine);
                 }));
             }
             else
-                console.AppendText(text + Environment.NewLine);
+                richTextBox1.AppendText(text + Environment.NewLine);
         }
     }
 }
