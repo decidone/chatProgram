@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.539
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfChatClient", "WpfChatClient\WpfChatClient.csproj", "{06973C2F-3E3A-4EE3-9531-474F3D31D439}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{06973C2F-3E3A-4EE3-9531-474F3D31D439}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06973C2F-3E3A-4EE3-9531-474F3D31D439}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06973C2F-3E3A-4EE3-9531-474F3D31D439}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06973C2F-3E3A-4EE3-9531-474F3D31D439}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5296E985-7A6A-4BEB-9684-48D9626612E8}
+	EndGlobalSection
+EndGlobal

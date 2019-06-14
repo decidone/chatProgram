@@ -56,9 +56,11 @@ namespace ChatServer
                     OnReceived(print);
 
                     if (jobj["work"].ToString() == "login")
-                        login(jobj);
+                        login(jobj, stream);
                     if (jobj["work"].ToString() == "register")
                         register(jobj, stream);
+                    if (jobj["work"].ToString() == "page_move")
+                        page_move(jobj, stream);
                 }
             }
             //catch (SocketException se)
@@ -88,7 +90,7 @@ namespace ChatServer
                 }
             }
         }
-        private void login(JObject jobj)
+        private void login(JObject jobj, NetworkStream stream)
         {
             if(jobj["user_id"].ToString() == "asdww")
             {
@@ -128,6 +130,15 @@ namespace ChatServer
             stream.Flush();
 
             MainForm.conn.Close();
+        }
+        private void page_move(JObject jobj, NetworkStream stream)
+        {
+            DataPacket dp = new DataPacket();
+            dp.work = "page_move_re";
+            string json = JsonConvert.SerializeObject(dp, Formatting.Indented);
+            byte[] buffer = Encoding.Unicode.GetBytes(json + "$");
+            stream.Write(buffer, 0, buffer.Length);
+            stream.Flush();
         }
     }
 }
