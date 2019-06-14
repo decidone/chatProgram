@@ -8,9 +8,11 @@ namespace ChatClient
 {
     class DataPacket
     {
-        public string Work { get; set; }
-        public string Id { get; set; }
-        public string Password { get; set; }
+        public string work { get; set; }
+        public string user_id { get; set; }
+        public string user_pw { get; set; }
+        public string user_name { get; set; }
+        public string message { get; set; }
         //public string Email { get; set; }
         //public bool Active { get; set; }
         //public DateTime CreatedDate { get; set; }

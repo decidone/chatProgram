@@ -1,8 +1,10 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Net.Sockets;
@@ -19,6 +21,7 @@ namespace ChatClient
         NetworkStream stream = default(NetworkStream);
         //string message = string.Empty;
         Thread tr;
+        Boolean get = true;
 
         public Login()
         {
@@ -34,7 +37,7 @@ namespace ChatClient
             //stream.Write(buffer, 0, buffer.Length);
             //stream.Flush();
 
-            tr = new Thread(GetMessage);
+            tr = new Thread(GetJSON);
             tr.IsBackground = true;
             tr.Start();
         }
@@ -43,9 +46,9 @@ namespace ChatClient
         {
             DataPacket dp = new DataPacket
             {
-                Work = "login",
-                Id = "asdww",
-                Password = "pw"
+                work = "login",
+                user_id = "asdww",
+                user_pw = "pw"
                 //Email = "james@example.com",
                 //Active = true,
                 //CreatedDate = new DateTime(2013, 1, 20, 0, 0, 0, DateTimeKind.Utc),
@@ -78,23 +81,38 @@ namespace ChatClient
 
         private void btnRegister_Click(object sender, EventArgs e)
         {
-            tr.Abort(); // 스레드 종료
+            get = false;
+            //tr.Join(); // 스레드 종료
             this.Visible = false; // 현재 폼 안보이게 하기
             Register frm = new Register(); // 새 폼 생성
             frm.Owner = this; // 새 폼의 오너를 현재 폼으로
             frm.Show(); // 새폼 보여 주 기 
         }
 
-        private void GetMessage()
+        private void GetJSON()
         {
-            while (true)
+            try
             {
-                stream = client.GetStream();
                 byte[] buffer = new byte[(int)client.ReceiveBufferSize];
-                int bytes = stream.Read(buffer, 0, buffer.Length);
+                string jsonData = string.Empty;
+                int bytes = 0;
+                stream = client.GetStream();
+                while (true)
+                {
+                    bytes = stream.Read(buffer, 0, buffer.Length);
+                    MessageBox.Show("dmdkdkdk");
+                    jsonData = Encoding.Unicode.GetString(buffer, 0, bytes);
+                    jsonData = jsonData.Substring(0, jsonData.IndexOf("$"));
 
-                //string message = Encoding.Unicode.GetString(buffer, 0, bytes);
-                //DisplayText(message);
+                    JObject jobj = JObject.Parse(jsonData);
+                    
+                    //string message = Encoding.Unicode.GetString(buffer, 0, bytes);
+                    //DisplayText(message);
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(string.Format(ex.Message));
             }
         }
 

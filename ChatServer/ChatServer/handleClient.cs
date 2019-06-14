@@ -7,6 +7,8 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using MySql.Data.MySqlClient;
+using Newtonsoft.Json;
 
 namespace ChatServer
 {
@@ -14,7 +16,7 @@ namespace ChatServer
     {
         TcpClient client = null;
         public List<TcpClient> clientList = null;
-
+        
         public void startClient(TcpClient clientSocket)
         {
             this.client = clientSocket;
@@ -50,11 +52,13 @@ namespace ChatServer
 
                     JObject jobj = JObject.Parse(jsonData);
                     
-                    string print = "Work = " + jobj["Work"].ToString();
+                    string print = "work = " + jobj["work"].ToString();
                     OnReceived(print);
 
-                    if (jobj["Work"].ToString() == "login")
+                    if (jobj["work"].ToString() == "login")
                         login(jobj);
+                    if (jobj["work"].ToString() == "register")
+                        register(jobj, stream);
                 }
             }
             //catch (SocketException se)
@@ -86,10 +90,44 @@ namespace ChatServer
         }
         private void login(JObject jobj)
         {
-            if(jobj["Id"].ToString() == "asdww")
+            if(jobj["user_id"].ToString() == "asdww")
             {
                 OnReceived("로그인 성공");
             }
+        }
+        private void register(JObject jobj, NetworkStream stream)
+        {
+            DataPacket dp = new DataPacket();
+            MainForm.conn.Open();
+            try
+            {
+                String sql = "INSERT INTO user (user_id, user_pw, user_name) " +
+                                "VALUES ('" + jobj["user_id"] + "', '" + jobj["user_pw"] + "', '" + jobj["user_name"] + "')";
+
+                MySqlCommand cmd = new MySqlCommand(sql, MainForm.conn);
+                cmd.ExecuteNonQuery();
+                
+                OnReceived(jobj["user_id"].ToString());
+                dp.work = "register_re";
+                dp.message = "가입 성공";
+            }
+            catch(MySqlException ex)
+            {
+                OnReceived("이미 가입된 아이디");
+                dp.work = "error";
+                dp.message = "이미 가입되어 있는 아이디입니다.";
+            }
+            catch (Exception ex)
+            {
+                OnReceived(ex.ToString());
+            }
+
+            string json = JsonConvert.SerializeObject(dp, Formatting.Indented);
+            byte[] buffer = Encoding.Unicode.GetBytes(json + "$");
+            stream.Write(buffer, 0, buffer.Length);
+            stream.Flush();
+
+            MainForm.conn.Close();
         }
     }
 }
