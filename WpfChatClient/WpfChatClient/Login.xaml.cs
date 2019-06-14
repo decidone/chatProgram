@@ -88,8 +88,7 @@ namespace WpfChatClient
             tr.Abort();
             DataPacket dp = new DataPacket
             {
-                work = "page_move",
-                
+                work = "page_move"
             };
             string json = JsonConvert.SerializeObject(dp, Formatting.Indented);
             byte[] buffer = Encoding.Unicode.GetBytes(json + "$");

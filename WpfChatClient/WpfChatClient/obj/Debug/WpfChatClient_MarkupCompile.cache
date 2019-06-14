@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\Jun\source\repos\WpfChatClient\WpfChatClient\obj\Debug\
+C:\Users\Jun\Documents\chatProgram\WpfChatClient\WpfChatClient\obj\Debug\
 WpfChatClient
 none
 false
 DEBUG;TRACE
-C:\Users\Jun\source\repos\WpfChatClient\WpfChatClient\App.xaml
+C:\Users\Jun\Documents\chatProgram\WpfChatClient\WpfChatClient\App.xaml
 3-630875497
 
-8710166775
+12-2053410273
 15-767994738
 Login.xaml;MainWindow.xaml;Register.xaml;
 
-False
+True
 
