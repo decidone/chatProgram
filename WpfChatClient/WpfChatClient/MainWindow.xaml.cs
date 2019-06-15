@@ -75,25 +75,22 @@ namespace WpfChatClient
                     if (des_json.work == "add_friend_re")
                     {
                         MessageBox.Show(des_json.message);
+                        Move("Friend");
                     }
-                    //if (jobj["work"].ToString() == "friend_list_re")
-                    //{
-                    //    MessageBox.Show(jobj.ToString());
-                    //    //Account account = JsonConvert.DeserializeObject<Account>(json);
-                    //    ////FriendData.DataSource.Clear();
-                    //    //if (jobj["friend_list"].Count == 0)
-                    //    //{
-
-                    //    //}
-                    //    string friend_list = jobj["friend_list"][0].ToString();
-
-                    //    FriendData.DataSource.Add(new FriendData(friend_list));
-                    //    FriendData.DataSource.Add(new FriendData("asdasdasd"));
-                    //}
+                    if (des_json.work == "friend_list_re")
+                    {
+                        FriendData.DataSource.Clear();
+                        IList<string> list = des_json.friend_list;
+                        for (int i = 0; i < list.Count; i++)
+                        {
+                            FriendData.DataSource.Add(new FriendData(list[i]));
+                        }
+                    }
                 }
             }
             catch (Exception ex)
             {
+                MessageBox.Show(ex.ToString());
                 Console.WriteLine(string.Format(ex.Message));
             }
         }

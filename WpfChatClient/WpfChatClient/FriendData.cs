@@ -10,7 +10,7 @@ namespace WpfChatClient
     class FriendData : Notifier
     {
 
-        public static ObservableCollection<FriendData> DataSource = new ObservableCollection<FriendData>();
+        public static List<FriendData> DataSource = new List<FriendData>();
 
         private string friend;
 
