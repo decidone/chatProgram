@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
@@ -26,10 +25,9 @@ namespace ChatServer
             tr.IsBackground = true;
             tr.Start();
         }
-
-        //public delegate void MessageDisplayHandler(string message, string user_name);
+        
         public delegate void MessageDisplayHandler(string text);
-        public event MessageDisplayHandler OnReceived;
+        public event MessageDisplayHandler Print;
 
         public delegate void DisconnectedHandler(TcpClient clientSocket);
         public event DisconnectedHandler OnDisconnected;
@@ -53,32 +51,18 @@ namespace ChatServer
                     JObject jobj = JObject.Parse(jsonData);
                     
                     string print = "work = " + jobj["work"].ToString();
-                    OnReceived(print);
+                    Print(print);
 
+                    // 나중에 case문으로 변경할 것
                     if (jobj["work"].ToString() == "login")
                         login(jobj, stream);
                     if (jobj["work"].ToString() == "register")
                         register(jobj, stream);
-                    if (jobj["work"].ToString() == "page_move")
-                        page_move(jobj, stream);
                 }
             }
-            //catch (SocketException se)
-            //{
-            //    Trace.WriteLine(string.Format("doChat - SocketException : {0}", se.Message));
-
-            //    if (client != null)
-            //    {
-            //        if (OnDisconnected != null)
-            //            OnDisconnected(client);
-
-            //        client.Close();
-            //        stream.Close();
-            //    }
-            //}
             catch (Exception ex)
             {
-                Trace.WriteLine(string.Format(ex.Message));
+                Console.WriteLine(string.Format(ex.Message));
 
                 if (client != null)
                 {
@@ -90,13 +74,15 @@ namespace ChatServer
                 }
             }
         }
+
         private void login(JObject jobj, NetworkStream stream)
         {
             if(jobj["user_id"].ToString() == "asdww")
             {
-                OnReceived("로그인 성공");
+                Print("로그인 성공");
             }
         }
+
         private void register(JObject jobj, NetworkStream stream)
         {
             DataPacket dp = new DataPacket();
@@ -109,19 +95,19 @@ namespace ChatServer
                 MySqlCommand cmd = new MySqlCommand(sql, MainForm.conn);
                 cmd.ExecuteNonQuery();
                 
-                OnReceived(jobj["user_id"].ToString());
+                Print(jobj["user_id"].ToString());
                 dp.work = "register_re";
                 dp.message = "가입 성공";
             }
             catch(MySqlException ex)
             {
-                OnReceived("이미 가입된 아이디");
+                Print("이미 가입된 아이디 생성 요청");
                 dp.work = "error";
                 dp.message = "이미 가입되어 있는 아이디입니다.";
             }
             catch (Exception ex)
             {
-                OnReceived(ex.ToString());
+                Print(ex.ToString());
             }
 
             string json = JsonConvert.SerializeObject(dp, Formatting.Indented);
@@ -130,15 +116,6 @@ namespace ChatServer
             stream.Flush();
 
             MainForm.conn.Close();
-        }
-        private void page_move(JObject jobj, NetworkStream stream)
-        {
-            DataPacket dp = new DataPacket();
-            dp.work = "page_move_re";
-            string json = JsonConvert.SerializeObject(dp, Formatting.Indented);
-            byte[] buffer = Encoding.Unicode.GetBytes(json + "$");
-            stream.Write(buffer, 0, buffer.Length);
-            stream.Flush();
         }
     }
 }

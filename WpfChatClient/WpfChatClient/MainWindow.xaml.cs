@@ -20,29 +20,19 @@ using System.Windows.Threading;
 
 namespace WpfChatClient
 {
-    /// <summary>
-    /// MainWindow.xaml에 대한 상호 작용 논리
-    /// </summary>
     public partial class MainWindow : Window
     {
         public static TcpClient client = new TcpClient();
         NetworkStream stream = default(NetworkStream);
-        //string message = string.Empty;
         Thread tr;
 
         public MainWindow()
         {
             InitializeComponent();
+            frame.Source = new Uri("Login.xaml", UriKind.Relative);
             client.Connect("127.0.0.1", 9999);
             stream = client.GetStream();
-            //this.frame.Source = new Uri("Main.xaml", UriKind.Relative);
-            //string message = "Connected to Chat Server";
-            //DisplayText(message);
-            frame.Source = new Uri("Login.xaml", UriKind.Relative);
-            //byte[] buffer = Encoding.Unicode.GetBytes("asd" + "$");
-            //stream.Write(buffer, 0, buffer.Length);
-            //stream.Flush();
-            //frame.Source = new Uri("Main.xaml", UriKind.Relative);
+
             tr = new Thread(GetJSON);
             tr.IsBackground = true;
             tr.Start();
@@ -58,24 +48,21 @@ namespace WpfChatClient
                 stream = client.GetStream();
                 while (true)
                 {
-                    //frame.Source = new Uri("Main.xaml", UriKind.Relative);
                     bytes = stream.Read(buffer, 0, buffer.Length);
-                    //MessageBox.Show("dmdkdkdk");
                     jsonData = Encoding.Unicode.GetString(buffer, 0, bytes);
                     jsonData = jsonData.Substring(0, jsonData.IndexOf("$"));
-                    //frame.Source = new Uri("Main.xaml", UriKind.Relative);
                     JObject jobj = JObject.Parse(jsonData);
 
-                    if (jobj["work"].ToString() == "error" || jobj["work"].ToString() == "register_re")
+                    // 나중에 case문으로 변경할 것
+                    if (jobj["work"].ToString() == "error")
                     {
                         MessageBox.Show(jobj["message"].ToString());
                     }
                     if(jobj["work"].ToString() == "register_re")
                     {
+                        MessageBox.Show(jobj["message"].ToString());
                         Move("Login");
                     }
-                    //string message = Encoding.Unicode.GetString(buffer, 0, bytes);
-                    //DisplayText(message);
                 }
             }
             catch (Exception ex)

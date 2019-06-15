@@ -45,23 +45,13 @@ namespace ChatServer
                 try
                 {
                     client = server.AcceptTcpClient();
-
                     //나중에 로그인 생기면 이것도 필요없을듯
                     DisplayText(">> Accept connection from client");
                     
-                    //NetworkStream stream = client.GetStream();
-                    //byte[] buffer = new byte[(int)client.ReceiveBufferSize];
-                    //int bytes = stream.Read(buffer, 0, buffer.Length);
-                    //string user_name = Encoding.Unicode.GetString(buffer, 0, bytes);
-                    //user_name = user_name.Substring(0, user_name.IndexOf("$"));
-
                     clientList.Add(client);
-
-                    //// send message all user
                     //SendMessageAll(user_name + " Joined ", "", false);
-
                     handleClient h_client = new handleClient();
-                    h_client.OnReceived += new handleClient.MessageDisplayHandler(OnReceived);
+                    h_client.Print += new handleClient.MessageDisplayHandler(Print);
                     h_client.OnDisconnected += new handleClient.DisconnectedHandler(h_client_OnDisconnected);
                     h_client.startClient(client);
                 }
@@ -91,7 +81,7 @@ namespace ChatServer
 
         }
         
-        private void OnReceived(string text)
+        private void Print(string text)
         {
             //string displayMessage = "From client : " + user_name + " : " + message;
             //DisplayText(displayMessage);
@@ -103,7 +93,7 @@ namespace ChatServer
         {
             foreach (var pair in clientList)
             {
-                Trace.WriteLine(string.Format("tcpclient : {0}", pair));
+                Console.WriteLine(string.Format("tcpclient : {0}", pair));
 
                 TcpClient client = pair as TcpClient;
                 NetworkStream stream = client.GetStream();
