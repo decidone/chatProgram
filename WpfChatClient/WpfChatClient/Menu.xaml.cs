@@ -39,5 +39,11 @@ namespace WpfChatClient
         {
             NavigationService.Source = new Uri("/MyPage.xaml", UriKind.Relative);
         }
+
+        private void logout_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow.userId = null;
+            NavigationService.Source = new Uri("/login.xaml", UriKind.Relative);
+        }
     }
 }

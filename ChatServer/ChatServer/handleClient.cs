@@ -161,11 +161,9 @@ namespace ChatServer
             {
                 String sql = "INSERT INTO friend (user_id, friend_id) " +
                                 "VALUES ('" + jobj["user_id"] + "', '" + jobj["friend_id"] + "')";
-                Print(jobj["user_id"].ToString() + jobj["friend_id"].ToString());
                 MySqlCommand cmd = new MySqlCommand(sql, MainForm.conn);
                 cmd.ExecuteNonQuery();
-
-                Print(jobj["user_id"].ToString());
+                Print("친구 추가 : " + jobj["user_id"].ToString() + " : " + jobj["friend_id"].ToString());
                 dp.work = "add_friend_re";
                 dp.message = "등록 완료";
             }
