@@ -66,6 +66,7 @@
     <Compile Include="Friend.xaml.cs">
       <DependentUpon>Friend.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FriendData.cs" />
     <Compile Include="Menu.xaml.cs">
       <DependentUpon>Menu.xaml</DependentUpon>
     </Compile>
@@ -75,6 +76,7 @@
     <Compile Include="NewChat.xaml.cs">
       <DependentUpon>NewChat.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Notifier.cs" />
     <Compile Include="Register.xaml.cs">
       <DependentUpon>Register.xaml</DependentUpon>
     </Compile>

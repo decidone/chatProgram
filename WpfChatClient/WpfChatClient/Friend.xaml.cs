@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
@@ -27,6 +28,18 @@ namespace WpfChatClient
         public Friend()
         {
             InitializeComponent();
+
+            DataPacket dp = new DataPacket
+            {
+                work = "friend_list",
+                user_id = MainWindow.userId
+            };
+            string json = JsonConvert.SerializeObject(dp, Formatting.Indented);
+            byte[] buffer = Encoding.Unicode.GetBytes(json + "$");
+            stream.Write(buffer, 0, buffer.Length);
+            stream.Flush();
+            
+            friend_list.ItemsSource = FriendData.DataSource;
         }
 
         private void Add_friend_Click(object sender, RoutedEventArgs e)

@@ -50,17 +50,20 @@ namespace ChatServer
                     jsonData = jsonData.Substring(0, jsonData.IndexOf("$"));
 
                     JObject jobj = JObject.Parse(jsonData);
-                    
+                    DataPacket des_json = JsonConvert.DeserializeObject<DataPacket>(jobj.ToString());
+
                     string print = "work = " + jobj["work"].ToString();
                     Print(print);
 
                     // 나중에 case문으로 변경할 것
-                    if (jobj["work"].ToString() == "login")
-                        login(jobj, stream);
-                    if (jobj["work"].ToString() == "register")
-                        register(jobj, stream);
-                    if (jobj["work"].ToString() == "add_friend")
-                        add_friend(jobj, stream);
+                    if (des_json.work == "login")
+                        login(des_json, stream);
+                    if (des_json.work == "register")
+                        register(des_json, stream);
+                    if (des_json.work == "add_friend")
+                        add_friend(des_json, stream);
+                    if (des_json.work == "friend_list")
+                        friend_list(des_json, stream);
                 }
             }
             catch (Exception ex)
@@ -78,7 +81,7 @@ namespace ChatServer
             }
         }
 
-        private void login(JObject jobj, NetworkStream stream)
+        private void login(DataPacket des_json, NetworkStream stream)
         {
             DataPacket dp = new DataPacket();
             dp.work = "error";
@@ -86,19 +89,19 @@ namespace ChatServer
             try
             {
                 DataSet ds = new DataSet();
-                string sql = "SELECT user_pw FROM user WHERE user_id = '"+ jobj["user_id"] + "'";
+                string sql = "SELECT user_pw FROM user WHERE user_id = '"+ des_json.user_id + "'";
                 MySqlDataAdapter adpt = new MySqlDataAdapter(sql, MainForm.conn);
                 adpt.Fill(ds, "user");
                 if (ds.Tables.Count > 0)
                 {
                     foreach (DataRow r in ds.Tables[0].Rows)
                     {
-                        if(r["user_pw"].ToString() == jobj["user_pw"].ToString())
+                        if(r["user_pw"].ToString() == des_json.user_pw)
                         {
                             dp.work = "login_re";
                             dp.message = "로그인 성공";
-                            dp.user_id = jobj["user_id"].ToString();
-                            Print(jobj["user_id"].ToString() + " 로그인");
+                            dp.user_id = des_json.user_id;
+                            Print(des_json.user_id + " 로그인");
                         }
                     }
                 }
@@ -118,19 +121,19 @@ namespace ChatServer
             stream.Flush();
         }
 
-        private void register(JObject jobj, NetworkStream stream)
+        private void register(DataPacket des_json, NetworkStream stream)
         {
             DataPacket dp = new DataPacket();
             MainForm.conn.Open();
             try
             {
                 String sql = "INSERT INTO user (user_id, user_pw, user_name) " +
-                                "VALUES ('" + jobj["user_id"] + "', '" + jobj["user_pw"] + "', '" + jobj["user_name"] + "')";
+                                "VALUES ('" + des_json.user_id + "', '" + des_json.user_pw + "', '" + des_json.user_name + "')";
 
                 MySqlCommand cmd = new MySqlCommand(sql, MainForm.conn);
                 cmd.ExecuteNonQuery();
                 
-                Print(jobj["user_id"].ToString());
+                Print(des_json.user_id.ToString());
                 dp.work = "register_re";
                 dp.message = "가입 성공";
             }
@@ -153,17 +156,17 @@ namespace ChatServer
             MainForm.conn.Close();
         }
 
-        private void add_friend(JObject jobj, NetworkStream stream)
+        private void add_friend(DataPacket des_json, NetworkStream stream)
         {
             DataPacket dp = new DataPacket();
             MainForm.conn.Open();
             try
             {
                 String sql = "INSERT INTO friend (user_id, friend_id) " +
-                                "VALUES ('" + jobj["user_id"] + "', '" + jobj["friend_id"] + "')";
+                                "VALUES ('" + des_json.user_id + "', '" + des_json.friend_id + "')";
                 MySqlCommand cmd = new MySqlCommand(sql, MainForm.conn);
                 cmd.ExecuteNonQuery();
-                Print("친구 추가 : " + jobj["user_id"].ToString() + " : " + jobj["friend_id"].ToString());
+                Print("친구 추가 : " + des_json.user_id + " : " + des_json.friend_id);
                 dp.work = "add_friend_re";
                 dp.message = "등록 완료";
             }
@@ -184,6 +187,45 @@ namespace ChatServer
             stream.Flush();
 
             MainForm.conn.Close();
+        }
+
+        private void friend_list(DataPacket des_json, NetworkStream stream)
+        {
+            DataPacket dp = new DataPacket();
+            //dp.work = "error";
+            //dp.message = "아이디나 패스워드를 확인하세요.";
+            try
+            {
+                DataSet ds = new DataSet();
+                string sql = "SELECT friend_id FROM friend WHERE user_id = '" + des_json.user_id + "'";
+                MySqlDataAdapter adpt = new MySqlDataAdapter(sql, MainForm.conn);
+                adpt.Fill(ds, "friend");
+                if (ds.Tables.Count > 0)
+                {
+                    dp.work = "friend_list_re";
+                    dp.friend_list = new List<string>();
+                    foreach (DataRow r in ds.Tables[0].Rows)
+                    {
+                        
+                            dp.friend_list.Add(r["friend_id"].ToString());
+                        
+                    }
+                }
+                Print(dp.friend_list.ToString());
+            }
+            catch (MySqlException ex)
+            {
+                Print("MySql 에러 : " + ex.ToString());
+            }
+            catch (Exception ex)
+            {
+                Print(ex.ToString());
+            }
+
+            string json = JsonConvert.SerializeObject(dp, Formatting.Indented);
+            byte[] buffer = Encoding.Unicode.GetBytes(json + "$");
+            stream.Write(buffer, 0, buffer.Length);
+            stream.Flush();
         }
     }
 }

@@ -14,5 +14,9 @@ namespace WpfChatClient
         public string user_name { get; set; }
         public string message { get; set; }
         public string friend_id { get; set; }
+        //public string Email { get; set; }
+        //public bool Active { get; set; }
+        //public DateTime CreatedDate { get; set; }
+        public IList<string> friend_list { get; set; }
     }
 }
