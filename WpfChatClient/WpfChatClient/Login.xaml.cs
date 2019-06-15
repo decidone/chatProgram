@@ -25,6 +25,7 @@ namespace WpfChatClient
     public partial class Login : Page
     {
         NetworkStream stream = MainWindow.client.GetStream();
+        
         //Thread tr;
         public Login()
         {
@@ -93,9 +94,10 @@ namespace WpfChatClient
             stream.Write(buffer, 0, buffer.Length);
             stream.Flush();
 
-            NavigationService.Navigate(
-              new Uri("/Register.xaml", UriKind.Relative)
-            );
+            //NavigationService.Navigate(
+            //  new Uri("/Register.xaml", UriKind.Relative)
+            //);
+            NavigationService.Source = new Uri("/Register.xaml", UriKind.Relative);
         }
 
         //private void GetJSON()

@@ -7,6 +7,17 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Frame x:Name="frame" Source="Login.xaml" />
+        <!--<Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="5*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <Button Name="btnmain" Width="80" Content="메인"/>
+            <Button Name="btnone" Width="80" Content="페이지 1"/>
+            <Button Name="btntwo" Width="80" Content="페이지 2"/>
+        </StackPanel>
+        <Frame Name="frame" Grid.Row="1" Source="Login.xaml"/>-->
+        
+        <Frame x:Name="frame"/>
     </Grid>
 </Window>

@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Net;
@@ -68,12 +67,12 @@ namespace ChatServer
                 }
                 catch (SocketException se)
                 {
-                    Trace.WriteLine(string.Format("InitSocket - SocketException : {0}", se.Message));
+                    Console.WriteLine(string.Format("InitSocket - SocketException : {0}", se.Message));
                     break;
                 }
                 catch (Exception ex)
                 {
-                    Trace.WriteLine(string.Format("InitSocket - Exception : {0}", ex.Message));
+                    Console.WriteLine(string.Format("InitSocket - Exception : {0}", ex.Message));
                     break;
                 }
             }

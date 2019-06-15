@@ -59,6 +59,10 @@ namespace WpfChatClient
             stream.Write(buffer, 0, buffer.Length);
             stream.Flush();
         }
+        public void move()
+        {
+            NavigationService.Source = new Uri("/Register.xaml", UriKind.Relative);
+        }
 
         //private void GetJSON()
         //{
