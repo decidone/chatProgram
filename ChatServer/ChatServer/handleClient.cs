@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
+using System.Data;
 
 namespace ChatServer
 {
@@ -77,10 +78,42 @@ namespace ChatServer
 
         private void login(JObject jobj, NetworkStream stream)
         {
-            if(jobj["user_id"].ToString() == "asdww")
+            DataPacket dp = new DataPacket();
+            dp.work = "error";
+            dp.message = "아이디나 패스워드를 확인하세요.";
+            try
             {
-                Print("로그인 성공");
+                DataSet ds = new DataSet();
+                //MySqlDataAdapter 클래스를 이용하여 비연결 모드로 데이타 가져오기
+                string sql = "SELECT user_pw FROM user WHERE user_id = '"+ jobj["user_id"] + "'";
+                MySqlDataAdapter adpt = new MySqlDataAdapter(sql, MainForm.conn);
+                adpt.Fill(ds, "user");
+                if (ds.Tables.Count > 0)
+                {
+                    foreach (DataRow r in ds.Tables[0].Rows)
+                    {
+                        if(r["user_pw"].ToString() == jobj["user_pw"].ToString())
+                        {
+                            dp.work = "login_re";
+                            dp.message = "로그인 성공";
+                            Print("로그인 성공");
+                        }
+                    }
+                }
             }
+            catch (MySqlException ex)
+            {
+                Print("MySql 에러 : " + ex.ToString());
+            }
+            catch (Exception ex)
+            {
+                Print(ex.ToString());
+            }
+
+            string json = JsonConvert.SerializeObject(dp, Formatting.Indented);
+            byte[] buffer = Encoding.Unicode.GetBytes(json + "$");
+            stream.Write(buffer, 0, buffer.Length);
+            stream.Flush();
         }
 
         private void register(JObject jobj, NetworkStream stream)

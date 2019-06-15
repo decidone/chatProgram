@@ -33,8 +33,8 @@ namespace WpfChatClient
             DataPacket dp = new DataPacket
             {
                 work = "login",
-                user_id = "asdww",
-                user_pw = "pw"
+                user_id = this.user_id.Text,
+                user_pw = this.user_pw.Text
                 //Roles = new List<string>
                 //{
                 //    "User",

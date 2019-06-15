@@ -44,5 +44,5 @@ C:\Users\Jun\Documents\chatProgram\WpfChatClient\WpfChatClient\obj\Debug\WpfChat
 C:\Users\Jun\Documents\chatProgram\WpfChatClient\WpfChatClient\obj\Debug\WpfChatClient.csproj.CopyComplete
 C:\Users\Jun\Documents\chatProgram\WpfChatClient\WpfChatClient\obj\Debug\WpfChatClient.exe
 C:\Users\Jun\Documents\chatProgram\WpfChatClient\WpfChatClient\obj\Debug\WpfChatClient.pdb
-C:\Users\Jun\Documents\chatProgram\WpfChatClient\WpfChatClient\obj\Debug\Main.g.cs
-C:\Users\Jun\Documents\chatProgram\WpfChatClient\WpfChatClient\obj\Debug\Main.baml
+C:\Users\Jun\Documents\chatProgram\WpfChatClient\WpfChatClient\obj\Debug\Menu.g.cs
+C:\Users\Jun\Documents\chatProgram\WpfChatClient\WpfChatClient\obj\Debug\Menu.baml

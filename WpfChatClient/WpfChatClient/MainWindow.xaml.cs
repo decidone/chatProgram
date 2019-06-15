@@ -63,6 +63,11 @@ namespace WpfChatClient
                         MessageBox.Show(jobj["message"].ToString());
                         Move("Login");
                     }
+                    if (jobj["work"].ToString() == "login_re")
+                    {
+                        MessageBox.Show(jobj["message"].ToString());
+                        Move("Menu");
+                    }
                 }
             }
             catch (Exception ex)

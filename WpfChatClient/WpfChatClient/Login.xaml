@@ -9,8 +9,8 @@
       Title="Login">
 
     <Grid>
-        <TextBox HorizontalAlignment="Left" Height="30" Margin="214,130,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="200"/>
-        <TextBox HorizontalAlignment="Left" Height="30" Margin="214,165,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="200"/>
+        <TextBox x:Name="user_id" HorizontalAlignment="Left" Height="30" Margin="214,130,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="200"/>
+        <TextBox x:Name="user_pw" HorizontalAlignment="Left" Height="30" Margin="214,165,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="200"/>
         <Button x:Name="button" Content="로그인" HorizontalAlignment="Left" Height="29" Margin="232,225,0,0" VerticalAlignment="Top" Width="81" Click="Button_Click"/>
         <Button x:Name="button1" Content="회원가입" HorizontalAlignment="Left" Height="29" Margin="333,225,0,0" VerticalAlignment="Top" Width="81" Click="Button1_Click"/>
 
