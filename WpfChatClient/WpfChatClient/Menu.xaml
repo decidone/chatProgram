@@ -9,7 +9,9 @@
       Title="Menu">
 
     <Grid>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="270,168,0,0" VerticalAlignment="Top" Width="75"/>
-
+        <Button x:Name="newchat" Content="새 채팅방" HorizontalAlignment="Left" Margin="50,39,0,0" VerticalAlignment="Top" Width="75" Click="Newchat_Click"/>
+        <DataGrid HorizontalAlignment="Left" Height="294" Margin="153,39,0,0" VerticalAlignment="Top" Width="232"/>
+        <Button x:Name="friend" Content="친구 목록" HorizontalAlignment="Left" Margin="50,64,0,0" VerticalAlignment="Top" Width="75" Click="Friend_Click"/>
+        <Button x:Name="mypage" Content="정보 관리" HorizontalAlignment="Left" Margin="50,89,0,0" VerticalAlignment="Top" Width="75" Click="Mypage_Click"/>
     </Grid>
 </Page>

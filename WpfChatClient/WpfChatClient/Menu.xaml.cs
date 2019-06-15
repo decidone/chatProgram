@@ -24,5 +24,20 @@ namespace WpfChatClient
         {
             InitializeComponent();
         }
+
+        private void Newchat_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Source = new Uri("/NewChat.xaml", UriKind.Relative);
+        }
+
+        private void Friend_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Source = new Uri("/Friend.xaml", UriKind.Relative);
+        }
+
+        private void Mypage_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Source = new Uri("/MyPage.xaml", UriKind.Relative);
+        }
     }
 }

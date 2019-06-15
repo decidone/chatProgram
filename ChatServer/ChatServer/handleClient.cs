@@ -84,7 +84,6 @@ namespace ChatServer
             try
             {
                 DataSet ds = new DataSet();
-                //MySqlDataAdapter 클래스를 이용하여 비연결 모드로 데이타 가져오기
                 string sql = "SELECT user_pw FROM user WHERE user_id = '"+ jobj["user_id"] + "'";
                 MySqlDataAdapter adpt = new MySqlDataAdapter(sql, MainForm.conn);
                 adpt.Fill(ds, "user");
@@ -96,7 +95,7 @@ namespace ChatServer
                         {
                             dp.work = "login_re";
                             dp.message = "로그인 성공";
-                            Print("로그인 성공");
+                            Print(jobj["user_id"].ToString() + " 로그인");
                         }
                     }
                 }
