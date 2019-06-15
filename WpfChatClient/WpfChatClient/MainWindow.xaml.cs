@@ -56,6 +56,7 @@ namespace WpfChatClient
                     jsonData = jsonData.Substring(0, jsonData.IndexOf("$"));
                     JObject jobj = JObject.Parse(jsonData);
                     DataPacket des_json = JsonConvert.DeserializeObject<DataPacket>(jobj.ToString());
+
                     // 나중에 case문으로 변경할 것
                     if (des_json.work == "error")
                     {
@@ -75,7 +76,10 @@ namespace WpfChatClient
                     if (des_json.work == "add_friend_re")
                     {
                         MessageBox.Show(des_json.message);
-                        //Move("Friend");
+                        Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+                        {
+                            frame.NavigationService.Refresh();
+                        }));
                     }
                     if (des_json.work == "friend_list_re")
                     {
