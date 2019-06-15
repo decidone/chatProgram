@@ -9,8 +9,7 @@ dataPacket 에 보낼 데이터들 명확하게 정립
 Work
 	login - login_re
 	register - register_re
-	page_move - page_move_re
-
+	add_friend - add_friend_re
 
 프로그램 실행 시 소켓 연결, 종료 시 소켓 연결 끊음
 

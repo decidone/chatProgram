@@ -9,6 +9,10 @@
       Title="Friend">
 
     <Grid>
-        
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="284,66,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="329,94,0,0" VerticalAlignment="Top" Width="75"/>
+        <DataGrid HorizontalAlignment="Left" Height="259" Margin="29,35,0,0" VerticalAlignment="Top" Width="229"/>
+        <TextBox x:Name="new_friend" HorizontalAlignment="Left" Height="23" Margin="284,220,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        <Button x:Name="add_friend" Content="친구추가" HorizontalAlignment="Left" Margin="329,248,0,0" VerticalAlignment="Top" Width="75" Click="Add_friend_Click"/>
     </Grid>
 </Page>

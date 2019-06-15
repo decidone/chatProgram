@@ -13,5 +13,6 @@ namespace WpfChatClient
         public string user_pw { get; set; }
         public string user_name { get; set; }
         public string message { get; set; }
+        public string friend_id { get; set; }
     }
 }

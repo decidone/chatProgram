@@ -59,6 +59,8 @@ namespace ChatServer
                         login(jobj, stream);
                     if (jobj["work"].ToString() == "register")
                         register(jobj, stream);
+                    if (jobj["work"].ToString() == "add_friend")
+                        add_friend(jobj, stream);
                 }
             }
             catch (Exception ex)
@@ -95,6 +97,7 @@ namespace ChatServer
                         {
                             dp.work = "login_re";
                             dp.message = "로그인 성공";
+                            dp.user_id = jobj["user_id"].ToString();
                             Print(jobj["user_id"].ToString() + " 로그인");
                         }
                     }
@@ -136,6 +139,41 @@ namespace ChatServer
                 Print("이미 가입된 아이디 생성 요청");
                 dp.work = "error";
                 dp.message = "이미 가입되어 있는 아이디입니다.";
+            }
+            catch (Exception ex)
+            {
+                Print(ex.ToString());
+            }
+
+            string json = JsonConvert.SerializeObject(dp, Formatting.Indented);
+            byte[] buffer = Encoding.Unicode.GetBytes(json + "$");
+            stream.Write(buffer, 0, buffer.Length);
+            stream.Flush();
+
+            MainForm.conn.Close();
+        }
+
+        private void add_friend(JObject jobj, NetworkStream stream)
+        {
+            DataPacket dp = new DataPacket();
+            MainForm.conn.Open();
+            try
+            {
+                String sql = "INSERT INTO friend (user_id, friend_id) " +
+                                "VALUES ('" + jobj["user_id"] + "', '" + jobj["friend_id"] + "')";
+                Print(jobj["user_id"].ToString() + jobj["friend_id"].ToString());
+                MySqlCommand cmd = new MySqlCommand(sql, MainForm.conn);
+                cmd.ExecuteNonQuery();
+
+                Print(jobj["user_id"].ToString());
+                dp.work = "add_friend_re";
+                dp.message = "등록 완료";
+            }
+            catch (MySqlException ex)
+            {
+                //Print(ex.ToString());
+                dp.work = "error";
+                dp.message = "친구추가 할 아이디를 다시 한 번 확인해주세요.";
             }
             catch (Exception ex)
             {

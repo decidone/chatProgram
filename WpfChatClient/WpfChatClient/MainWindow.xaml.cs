@@ -24,6 +24,7 @@ namespace WpfChatClient
     {
         public static TcpClient client = new TcpClient();
         NetworkStream stream = default(NetworkStream);
+        static public string userId;
         Thread tr;
 
         public MainWindow()
@@ -66,7 +67,12 @@ namespace WpfChatClient
                     if (jobj["work"].ToString() == "login_re")
                     {
                         MessageBox.Show(jobj["message"].ToString());
+                        userId = jobj["user_id"].ToString();
                         Move("Menu");
+                    }
+                    if (jobj["work"].ToString() == "add_friend_re")
+                    {
+                        MessageBox.Show(jobj["message"].ToString());
                     }
                 }
             }
