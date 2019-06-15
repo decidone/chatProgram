@@ -90,6 +90,14 @@ namespace WpfChatClient
                             FriendData.Current.DataSource.Add(new FriendData(list[i]));
                         }
                     }
+                    if (des_json.work == "del_friend_re")
+                    {
+                        MessageBox.Show(des_json.message);
+                        Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+                        {
+                            frame.NavigationService.Refresh();
+                        }));
+                    }
                 }
             }
             catch (Exception ex)

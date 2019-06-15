@@ -64,6 +64,8 @@ namespace ChatServer
                         add_friend(des_json, stream);
                     if (des_json.work == "friend_list")
                         friend_list(des_json, stream);
+                    if (des_json.work == "del_friend")
+                        del_friend(des_json, stream);
                 }
             }
             catch (Exception ex)
@@ -224,6 +226,36 @@ namespace ChatServer
             byte[] buffer = Encoding.Unicode.GetBytes(json + "$");
             stream.Write(buffer, 0, buffer.Length);
             stream.Flush();
+        }
+        private void del_friend(DataPacket des_json, NetworkStream stream)
+        {
+            DataPacket dp = new DataPacket();
+            MainForm.conn.Open();
+            try
+            {
+                String sql = "DELETE FROM friend WHERE user_id = '" + des_json.user_id+ "' AND friend_id = '" + des_json.friend_id + "'";
+                MySqlCommand cmd = new MySqlCommand(sql, MainForm.conn);
+                cmd.ExecuteNonQuery();
+                dp.work = "del_friend_re";
+                dp.message = "삭제 완료";
+            }
+            catch (MySqlException ex)
+            {
+                //Print(ex.ToString());
+                dp.work = "error";
+                dp.message = "삭제 실패";
+            }
+            catch (Exception ex)
+            {
+                Print(ex.ToString());
+            }
+
+            string json = JsonConvert.SerializeObject(dp, Formatting.Indented);
+            byte[] buffer = Encoding.Unicode.GetBytes(json + "$");
+            stream.Write(buffer, 0, buffer.Length);
+            stream.Flush();
+
+            MainForm.conn.Close();
         }
     }
 }
