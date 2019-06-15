@@ -55,5 +55,19 @@ namespace WpfChatClient
             stream.Write(buffer, 0, buffer.Length);
             stream.Flush();
         }
+
+        private void Delete_friend_Click(object sender, RoutedEventArgs e)
+        {
+            DataPacket dp = new DataPacket
+            {
+                work = "del_friend",
+                user_id = MainWindow.userId,
+                friend_id = this.sel_friend.Text
+            };
+            string json = JsonConvert.SerializeObject(dp, Formatting.Indented);
+            byte[] buffer = Encoding.Unicode.GetBytes(json + "$");
+            stream.Write(buffer, 0, buffer.Length);
+            stream.Flush();
+        }
     }
 }

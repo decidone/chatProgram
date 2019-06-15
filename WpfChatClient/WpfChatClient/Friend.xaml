@@ -9,14 +9,15 @@
       Title="Friend">
 
     <Grid>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="284,66,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="329,94,0,0" VerticalAlignment="Top" Width="75"/>
+        <TextBox x:Name="sel_friend" HorizontalAlignment="Left" Height="23" Margin="284,66,0,0" TextWrapping="Wrap" Text="{Binding SelectedItem.friend_id, ElementName=friend_list}" VerticalAlignment="Top" Width="120"/>
+        <Button x:Name="delete_friend" Content="삭제" HorizontalAlignment="Left" Margin="329,94,0,0" VerticalAlignment="Top" Width="75" Click="Delete_friend_Click"/>
         <TextBox x:Name="new_friend" HorizontalAlignment="Left" Height="23" Margin="284,220,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
         <Button x:Name="add_friend" Content="친구추가" HorizontalAlignment="Left" Margin="329,248,0,0" VerticalAlignment="Top" Width="75" Click="Add_friend_Click"/>
-        <ListView Margin="28,33,533,92" Name="friend_list">
+
+        <ListView Margin="28,33,533,92" x:Name="friend_list">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Name" Width="120" DisplayMemberBinding="{Binding friend_id}" />
+                    <GridViewColumn x:Name="sel" Header="Name" Width="120" DisplayMemberBinding="{Binding friend_id}" />
                 </GridView>
             </ListView.View>
         </ListView>
