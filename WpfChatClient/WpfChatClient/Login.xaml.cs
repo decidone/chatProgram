@@ -24,26 +24,24 @@ namespace WpfChatClient
     /// </summary>
     public partial class Login : Page
     {
-        public static TcpClient client = new TcpClient();
-        NetworkStream stream = default(NetworkStream);
-        //string message = string.Empty;
-        Thread tr;
+        NetworkStream stream = MainWindow.client.GetStream();
+        //Thread tr;
         public Login()
         {
             InitializeComponent();
-            client.Connect("127.0.0.1", 9999);
-            stream = client.GetStream();
+            //client.Connect("127.0.0.1", 9999);
+            //stream = client.GetStream();
 
-            //string message = "Connected to Chat Server";
-            //DisplayText(message);
+            ////string message = "Connected to Chat Server";
+            ////DisplayText(message);
 
-            //byte[] buffer = Encoding.Unicode.GetBytes("asd" + "$");
-            //stream.Write(buffer, 0, buffer.Length);
-            //stream.Flush();
+            ////byte[] buffer = Encoding.Unicode.GetBytes("asd" + "$");
+            ////stream.Write(buffer, 0, buffer.Length);
+            ////stream.Flush();
 
-            tr = new Thread(GetJSON);
-            tr.IsBackground = true;
-            tr.Start();
+            //tr = new Thread(GetJSON);
+            //tr.IsBackground = true;
+            //tr.Start();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -85,7 +83,7 @@ namespace WpfChatClient
 
         private void Button1_Click(object sender, RoutedEventArgs e)
         {
-            tr.Abort();
+            //tr.Abort();
             DataPacket dp = new DataPacket
             {
                 work = "page_move"
@@ -100,31 +98,31 @@ namespace WpfChatClient
             );
         }
 
-        private void GetJSON()
-        {
-            try
-            {
-                byte[] buffer = new byte[(int)client.ReceiveBufferSize];
-                string jsonData = string.Empty;
-                int bytes = 0;
-                stream = client.GetStream();
-                while (true)
-                {
-                    bytes = stream.Read(buffer, 0, buffer.Length);
-                    MessageBox.Show("dmdkdkdk");
-                    jsonData = Encoding.Unicode.GetString(buffer, 0, bytes);
-                    jsonData = jsonData.Substring(0, jsonData.IndexOf("$"));
+        //private void GetJSON()
+        //{
+        //    try
+        //    {
+        //        byte[] buffer = new byte[(int)client.ReceiveBufferSize];
+        //        string jsonData = string.Empty;
+        //        int bytes = 0;
+        //        stream = client.GetStream();
+        //        while (true)
+        //        {
+        //            bytes = stream.Read(buffer, 0, buffer.Length);
+        //            MessageBox.Show("dmdkdkdk");
+        //            jsonData = Encoding.Unicode.GetString(buffer, 0, bytes);
+        //            jsonData = jsonData.Substring(0, jsonData.IndexOf("$"));
 
-                    JObject jobj = JObject.Parse(jsonData);
+        //            JObject jobj = JObject.Parse(jsonData);
 
-                    //string message = Encoding.Unicode.GetString(buffer, 0, bytes);
-                    //DisplayText(message);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(string.Format(ex.Message));
-            }
-        }
+        //            //string message = Encoding.Unicode.GetString(buffer, 0, bytes);
+        //            //DisplayText(message);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine(string.Format(ex.Message));
+        //    }
+        //}
     }
 }

@@ -24,15 +24,15 @@ namespace WpfChatClient
     /// </summary>
     public partial class Register : Page
     {
-        NetworkStream stream = Login.client.GetStream();
-        Thread tr;
+        NetworkStream stream = MainWindow.client.GetStream();
+        //Thread tr;
         public Register()
         {
             InitializeComponent();
 
-            tr = new Thread(GetJSON);
-            tr.IsBackground = true;
-            tr.Start();
+            //tr = new Thread(GetJSON);
+            //tr.IsBackground = true;
+            //tr.Start();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -60,36 +60,36 @@ namespace WpfChatClient
             stream.Flush();
         }
 
-        private void GetJSON()
-        {
-            //MessageBox.Show("getJSON 시작");
-            try
-            {
-                byte[] buffer = new byte[(int)Login.client.ReceiveBufferSize];
-                string jsonData = string.Empty;
-                int bytes = 0;
-                stream = Login.client.GetStream();
-                while (true)
-                {
-                    bytes = stream.Read(buffer, 0, buffer.Length);
-                    jsonData = Encoding.Unicode.GetString(buffer, 0, bytes);
-                    jsonData = jsonData.Substring(0, jsonData.IndexOf("$"));
+        //private void GetJSON()
+        //{
+        //    //MessageBox.Show("getJSON 시작");
+        //    try
+        //    {
+        //        byte[] buffer = new byte[(int)Login.client.ReceiveBufferSize];
+        //        string jsonData = string.Empty;
+        //        int bytes = 0;
+        //        stream = Login.client.GetStream();
+        //        while (true)
+        //        {
+        //            bytes = stream.Read(buffer, 0, buffer.Length);
+        //            jsonData = Encoding.Unicode.GetString(buffer, 0, bytes);
+        //            jsonData = jsonData.Substring(0, jsonData.IndexOf("$"));
 
-                    JObject jobj = JObject.Parse(jsonData);
+        //            JObject jobj = JObject.Parse(jsonData);
 
-                    if (jobj["work"].ToString() == "error" || jobj["work"].ToString() == "register_re")
-                    {
-                        MessageBox.Show(jobj["message"].ToString());
-                    }
-                    //string message = Encoding.Unicode.GetString(buffer, 0, bytes);
-                    //DisplayText(message);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("error");
-                Console.WriteLine(string.Format(ex.Message));
-            }
-        }
+        //            if (jobj["work"].ToString() == "error" || jobj["work"].ToString() == "register_re")
+        //            {
+        //                MessageBox.Show(jobj["message"].ToString());
+        //            }
+        //            //string message = Encoding.Unicode.GetString(buffer, 0, bytes);
+        //            //DisplayText(message);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show("error");
+        //        Console.WriteLine(string.Format(ex.Message));
+        //    }
+        //}
     }
 }
