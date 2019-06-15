@@ -206,9 +206,7 @@ namespace ChatServer
                     dp.friend_list = new List<string>();
                     foreach (DataRow r in ds.Tables[0].Rows)
                     {
-                        
-                            dp.friend_list.Add(r["friend_id"].ToString());
-                        
+                        dp.friend_list.Add(r["friend_id"].ToString());
                     }
                 }
                 Print(dp.friend_list.ToString());

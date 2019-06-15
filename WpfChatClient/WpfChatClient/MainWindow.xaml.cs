@@ -75,15 +75,15 @@ namespace WpfChatClient
                     if (des_json.work == "add_friend_re")
                     {
                         MessageBox.Show(des_json.message);
-                        Move("Friend");
+                        //Move("Friend");
                     }
                     if (des_json.work == "friend_list_re")
                     {
-                        FriendData.DataSource.Clear();
+                        FriendData.Current.DataSource.Clear();
                         IList<string> list = des_json.friend_list;
                         for (int i = 0; i < list.Count; i++)
                         {
-                            FriendData.DataSource.Add(new FriendData(list[i]));
+                            FriendData.Current.DataSource.Add(new FriendData(list[i]));
                         }
                     }
                 }
