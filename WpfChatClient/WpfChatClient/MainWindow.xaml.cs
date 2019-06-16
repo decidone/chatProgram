@@ -119,6 +119,10 @@ namespace WpfChatClient
                     {
                         Move("Menu");
                     }
+                    if (des_json.work == "chat_room_out_re")
+                    {
+                        Move("Menu");
+                    }
                 }
             }
             catch (Exception ex)

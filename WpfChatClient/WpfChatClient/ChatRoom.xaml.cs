@@ -47,5 +47,19 @@ namespace WpfChatClient
             stream.Write(buffer, 0, buffer.Length);
             stream.Flush();
         }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            DataPacket dp = new DataPacket
+            {
+                work = "chat_room_out",
+                room_num = MainWindow.chat_room,
+                user_id = MainWindow.userId
+            };
+            string json = JsonConvert.SerializeObject(dp, Formatting.Indented);
+            byte[] buffer = Encoding.Unicode.GetBytes(json + "$");
+            stream.Write(buffer, 0, buffer.Length);
+            stream.Flush();
+        }
     }
 }
