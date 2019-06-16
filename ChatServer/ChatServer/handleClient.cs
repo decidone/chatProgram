@@ -84,7 +84,7 @@ namespace ChatServer
                 }
             }
         }
-
+        #region login
         private void login(DataPacket des_json, NetworkStream stream)
         {
             DataPacket dp = new DataPacket();
@@ -106,24 +106,10 @@ namespace ChatServer
                             dp.work = "login_re";
                             dp.message = "로그인 성공";
                             dp.user_id = des_json.user_id;
-                            //Print(des_json.user_id + " 로그인");
                         }
                         dp.chat_list.Add(Convert.ToInt32(r["room_num"]));
                     }
                 }
-                //ds = new DataSet();
-                //sql = "SELECT room_num FROM chat_user WHERE user_id = '" + des_json.user_id + "'";
-                //adpt = new MySqlDataAdapter(sql, MainForm.conn);
-                //adpt.Fill(ds, "chat_user");
-                //if (ds.Tables.Count > 0)
-                //{
-                //    //dp.work = "friend_list_re";
-                //    dp.chat_list = new List<int>();
-                //    foreach (DataRow r in ds.Tables[0].Rows)
-                //    {
-                //        dp.chat_list.Add(Convert.ToInt32(r["room_num"]));
-                //    }
-                //}
             }
             catch (MySqlException ex)
             {
@@ -139,7 +125,9 @@ namespace ChatServer
             stream.Write(buffer, 0, buffer.Length);
             stream.Flush();
         }
+        #endregion
 
+        #region register
         private void register(DataPacket des_json, NetworkStream stream)
         {
             DataPacket dp = new DataPacket();
@@ -174,7 +162,9 @@ namespace ChatServer
 
             MainForm.conn.Close();
         }
+        #endregion
 
+        #region add_friend
         private void add_friend(DataPacket des_json, NetworkStream stream)
         {
             DataPacket dp = new DataPacket();
@@ -207,7 +197,9 @@ namespace ChatServer
 
             MainForm.conn.Close();
         }
+        #endregion
 
+        #region friend_list
         private void friend_list(DataPacket des_json, NetworkStream stream)
         {
             DataPacket dp = new DataPacket();
@@ -243,6 +235,9 @@ namespace ChatServer
             stream.Write(buffer, 0, buffer.Length);
             stream.Flush();
         }
+        #endregion
+
+        #region del_friend
         private void del_friend(DataPacket des_json, NetworkStream stream)
         {
             DataPacket dp = new DataPacket();
@@ -273,7 +268,9 @@ namespace ChatServer
 
             MainForm.conn.Close();
         }
+        #endregion
 
+        #region new_chat
         private void new_chat(DataPacket des_json, NetworkStream stream)
         {
             DataPacket dp = new DataPacket();
@@ -321,5 +318,6 @@ namespace ChatServer
 
             MainForm.conn.Close();
         }
+        #endregion
     }
 }
