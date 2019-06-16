@@ -26,6 +26,7 @@ namespace WpfChatClient
         public static TcpClient client = new TcpClient();
         NetworkStream stream = default(NetworkStream);
         static public string userId;
+        static public int chat_room;
         Thread tr;
         
         public MainWindow()
@@ -97,6 +98,10 @@ namespace WpfChatClient
                         {
                             frame.NavigationService.Refresh();
                         }));
+                    }
+                    if (des_json.work == "new_chat_re")
+                    {
+                        chat_room = des_json.room_num;
                     }
                 }
             }

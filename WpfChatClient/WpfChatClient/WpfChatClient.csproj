@@ -73,9 +73,6 @@
     <Compile Include="MyPage.xaml.cs">
       <DependentUpon>MyPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="NewChat.xaml.cs">
-      <DependentUpon>NewChat.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Notifier.cs" />
     <Compile Include="Register.xaml.cs">
       <DependentUpon>Register.xaml</DependentUpon>
@@ -113,10 +110,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MyPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="NewChat.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -9,6 +9,24 @@
       Title="ChatRoom">
 
     <Grid>
-        
+        <ListBox Grid.ColumnSpan="1"
+                 Margin="10,10,471,79">
+            <!--<ListBox.ItemsSource>
+                <data:Talk />
+            </ListBox.ItemsSource>-->
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Width="300">
+                        <StackPanel Orientation="Horizontal">
+                            <!--<Image Source="chat.png" Width="20" />-->
+                            <TextBlock Text="asd" />
+                        </StackPanel>
+                        <TextBlock Text="asd"
+                                   Margin="20,0,0,0"
+                                   TextWrapping="Wrap" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
 </Page>

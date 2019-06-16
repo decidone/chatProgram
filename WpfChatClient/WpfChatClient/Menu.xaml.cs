@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,6 +22,8 @@ namespace WpfChatClient
     /// </summary>
     public partial class Menu : Page
     {
+        NetworkStream stream = MainWindow.client.GetStream();
+
         public Menu()
         {
             InitializeComponent();
@@ -27,7 +31,17 @@ namespace WpfChatClient
 
         private void Newchat_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.Source = new Uri("/NewChat.xaml", UriKind.Relative);
+            DataPacket dp = new DataPacket
+            {
+                work = "new_chat",
+                user_id = MainWindow.userId
+            };
+            string json = JsonConvert.SerializeObject(dp, Formatting.Indented);
+            byte[] buffer = Encoding.Unicode.GetBytes(json + "$");
+            stream.Write(buffer, 0, buffer.Length);
+            stream.Flush();
+
+            NavigationService.Source = new Uri("/ChatRoom.xaml", UriKind.Relative);
         }
 
         private void Friend_Click(object sender, RoutedEventArgs e)

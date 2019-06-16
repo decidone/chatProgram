@@ -49,8 +49,6 @@ C:\Users\Jun\Documents\chatProgram\WpfChatClient\WpfChatClient\obj\Debug\Menu.ba
 C:\Users\Jun\Documents\chatProgram\WpfChatClient\WpfChatClient\obj\Debug\ChatRoom.g.cs
 C:\Users\Jun\Documents\chatProgram\WpfChatClient\WpfChatClient\obj\Debug\Friend.g.cs
 C:\Users\Jun\Documents\chatProgram\WpfChatClient\WpfChatClient\obj\Debug\MyPage.g.cs
-C:\Users\Jun\Documents\chatProgram\WpfChatClient\WpfChatClient\obj\Debug\NewChat.g.cs
 C:\Users\Jun\Documents\chatProgram\WpfChatClient\WpfChatClient\obj\Debug\ChatRoom.baml
 C:\Users\Jun\Documents\chatProgram\WpfChatClient\WpfChatClient\obj\Debug\Friend.baml
 C:\Users\Jun\Documents\chatProgram\WpfChatClient\WpfChatClient\obj\Debug\MyPage.baml
-C:\Users\Jun\Documents\chatProgram\WpfChatClient\WpfChatClient\obj\Debug\NewChat.baml

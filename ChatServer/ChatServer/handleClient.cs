@@ -66,6 +66,8 @@ namespace ChatServer
                         friend_list(des_json, stream);
                     if (des_json.work == "del_friend")
                         del_friend(des_json, stream);
+                    if (des_json.work == "new_chat")
+                        new_chat(des_json, stream);
                 }
             }
             catch (Exception ex)
@@ -211,7 +213,6 @@ namespace ChatServer
                         dp.friend_list.Add(r["friend_id"].ToString());
                     }
                 }
-                Print(dp.friend_list.ToString());
             }
             catch (MySqlException ex)
             {
@@ -244,6 +245,54 @@ namespace ChatServer
                 //Print(ex.ToString());
                 dp.work = "error";
                 dp.message = "삭제 실패";
+            }
+            catch (Exception ex)
+            {
+                Print(ex.ToString());
+            }
+
+            string json = JsonConvert.SerializeObject(dp, Formatting.Indented);
+            byte[] buffer = Encoding.Unicode.GetBytes(json + "$");
+            stream.Write(buffer, 0, buffer.Length);
+            stream.Flush();
+
+            MainForm.conn.Close();
+        }
+
+        private void new_chat(DataPacket des_json, NetworkStream stream)
+        {
+            DataPacket dp = new DataPacket();
+            MainForm.conn.Open();
+            try
+            {
+                String sql = "INSERT INTO chat_room VALUE()";
+                MySqlCommand cmd = new MySqlCommand(sql, MainForm.conn);
+                cmd.ExecuteNonQuery();
+
+                sql = "SELECT MAX(room_num) AS room_num from chat_room";
+                cmd = new MySqlCommand(sql, MainForm.conn);
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                string str_Temp = "";
+
+                while (rdr.Read())
+                {
+                    str_Temp += rdr["room_num"].ToString();
+                }
+                rdr.Close();
+
+                int roomNum = Convert.ToInt32(str_Temp);
+                sql = "INSERT INTO chat_user VALUES('" + roomNum + "','" + des_json.user_id + "', '1')";
+                cmd = new MySqlCommand(sql, MainForm.conn);
+                cmd.ExecuteNonQuery();
+                
+                dp.work = "new_chat_re";
+                dp.room_num = roomNum;
+            }
+            catch (MySqlException ex)
+            {
+                //Print(ex.ToString());
+                dp.work = "error";
+                dp.message = "새로운 채팅방을 생성하지 못했습니다.";
             }
             catch (Exception ex)
             {
