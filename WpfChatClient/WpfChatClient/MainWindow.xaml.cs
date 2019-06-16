@@ -111,6 +111,10 @@ namespace WpfChatClient
                     {
                         chat_room = des_json.room_num;
                     }
+                    if (des_json.work == "invite_friend_re")
+                    {
+                        MessageBox.Show(des_json.message);
+                    }
                 }
             }
             catch (Exception ex)

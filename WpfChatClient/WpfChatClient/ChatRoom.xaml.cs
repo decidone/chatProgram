@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,9 +21,16 @@ namespace WpfChatClient
     /// </summary>
     public partial class ChatRoom : Page
     {
+        NetworkStream stream = MainWindow.client.GetStream();
+
         public ChatRoom()
         {
             InitializeComponent();
+        }
+
+        private void Invite_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Source = new Uri("/FriendList.xaml", UriKind.Relative);
         }
     }
 }

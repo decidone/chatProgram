@@ -68,6 +68,8 @@ namespace ChatServer
                         del_friend(des_json, stream);
                     if (des_json.work == "new_chat")
                         new_chat(des_json, stream);
+                    if (des_json.work == "invite_friend")
+                        invite_friend(des_json, stream);
                 }
             }
             catch (Exception ex)
@@ -319,5 +321,37 @@ namespace ChatServer
             MainForm.conn.Close();
         }
         #endregion
+
+        private void invite_friend(DataPacket des_json, NetworkStream stream)
+        {
+            DataPacket dp = new DataPacket();
+            MainForm.conn.Open();
+            try
+            {
+                String sql = "INSERT INTO chat_user VALUES('" + des_json.room_num + "', '" + des_json.friend_id + "', '0')";
+                MySqlCommand cmd = new MySqlCommand(sql, MainForm.conn);
+                cmd.ExecuteNonQuery();
+                //Print(des_json.room_num.ToString());
+                dp.work = "invite_friend_re";
+                dp.message = des_json.friend_id + "님을 초대했습니다.";
+            }
+            catch (MySqlException ex)
+            {
+                //Print(ex.ToString());
+                dp.work = "error";
+                dp.message = "이미 채팅방에 초대되어있는 유저입니다.";
+            }
+            catch (Exception ex)
+            {
+                Print(ex.ToString());
+            }
+
+            string json = JsonConvert.SerializeObject(dp, Formatting.Indented);
+            byte[] buffer = Encoding.Unicode.GetBytes(json + "$");
+            stream.Write(buffer, 0, buffer.Length);
+            stream.Flush();
+
+            MainForm.conn.Close();
+        }
     }
 }

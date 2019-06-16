@@ -52,3 +52,5 @@ C:\Users\Jun\Documents\chatProgram\WpfChatClient\WpfChatClient\obj\Debug\MyPage.
 C:\Users\Jun\Documents\chatProgram\WpfChatClient\WpfChatClient\obj\Debug\ChatRoom.baml
 C:\Users\Jun\Documents\chatProgram\WpfChatClient\WpfChatClient\obj\Debug\Friend.baml
 C:\Users\Jun\Documents\chatProgram\WpfChatClient\WpfChatClient\obj\Debug\MyPage.baml
+C:\Users\Jun\Documents\chatProgram\WpfChatClient\WpfChatClient\obj\Debug\FriendList.g.cs
+C:\Users\Jun\Documents\chatProgram\WpfChatClient\WpfChatClient\obj\Debug\FriendList.baml
