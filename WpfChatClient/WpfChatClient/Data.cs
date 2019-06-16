@@ -8,10 +8,11 @@ using System.ComponentModel;
 
 namespace WpfChatClient
 {
-    class FriendData : INotifyPropertyChanged
+    class Data : INotifyPropertyChanged
     {
 
-        public List<FriendData> DataSource = new List<FriendData>();
+        public List<Data> FriendList = new List<Data>();
+        public List<Data> ChatList = new List<Data>();
 
         private string friend;
 
@@ -24,16 +25,30 @@ namespace WpfChatClient
             }
         }
 
-        public FriendData()
+        private int chat;
+
+        public int chat_room
         {
+            get { return chat; }
+            set {
+                chat = value;
+                OnPropertyChanged("chat_room");
+            }
         }
-        public FriendData(string friend)
+
+
+        public Data() { }
+        public Data(string friend)
         {
             this.friend_id = friend;
         }
+        public Data(int chat_room)
+        {
+            this.chat_room = chat_room;
+        }
 
         // Singleton
-        public static FriendData Current = new FriendData();
+        public static Data Current = new Data();
         
         public event PropertyChangedEventHandler PropertyChanged;
 

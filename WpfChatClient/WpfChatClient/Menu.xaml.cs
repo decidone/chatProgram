@@ -27,6 +27,8 @@ namespace WpfChatClient
         public Menu()
         {
             InitializeComponent();
+
+            chat_room_list.ItemsSource = Data.Current.ChatList;
         }
 
         private void Newchat_Click(object sender, RoutedEventArgs e)

@@ -72,6 +72,14 @@ namespace WpfChatClient
                     {
                         MessageBox.Show(des_json.message);
                         userId = des_json.user_id;
+
+                        Data.Current.ChatList.Clear();
+                        IList<int> list = des_json.chat_list;
+                        for (int i = 0; i < list.Count; i++)
+                        {
+                            Data.Current.ChatList.Add(new Data(list[i]));
+                        }
+
                         Move("Menu");
                     }
                     if (des_json.work == "add_friend_re")
@@ -84,11 +92,11 @@ namespace WpfChatClient
                     }
                     if (des_json.work == "friend_list_re")
                     {
-                        FriendData.Current.DataSource.Clear();
+                        Data.Current.FriendList.Clear();
                         IList<string> list = des_json.friend_list;
                         for (int i = 0; i < list.Count; i++)
                         {
-                            FriendData.Current.DataSource.Add(new FriendData(list[i]));
+                            Data.Current.FriendList.Add(new Data(list[i]));
                         }
                     }
                     if (des_json.work == "del_friend_re")

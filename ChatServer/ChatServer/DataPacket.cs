@@ -19,5 +19,6 @@ namespace ChatServer
         //public bool Active { get; set; }
         //public DateTime CreatedDate { get; set; }
         public IList<string> friend_list { get; set; }
+        public IList<int> chat_list { get; set; }
     }
 }

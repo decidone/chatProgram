@@ -10,7 +10,13 @@
 
     <Grid>
         <Button x:Name="newchat" Content="새 채팅방" HorizontalAlignment="Left" Margin="50,39,0,0" VerticalAlignment="Top" Width="75" Click="Newchat_Click"/>
-        <DataGrid HorizontalAlignment="Left" Height="294" Margin="153,39,0,0" VerticalAlignment="Top" Width="232"/>
+        <ListView Margin="152,38,409,87" x:Name="chat_room_list">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn x:Name="sel" Header="Chat Room" Width="120" DisplayMemberBinding="{Binding chat_room}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
         <Button x:Name="friend" Content="친구목록" HorizontalAlignment="Left" Margin="50,64,0,0" VerticalAlignment="Top" Width="75" Click="Friend_Click"/>
         <Button x:Name="mypage" Content="정보관리" HorizontalAlignment="Left" Margin="50,89,0,0" VerticalAlignment="Top" Width="75" Click="Mypage_Click"/>
         <Button x:Name="logout" Content="로그아웃" HorizontalAlignment="Left" Margin="50,313,0,0" VerticalAlignment="Top" Width="75" Click="logout_Click"/>

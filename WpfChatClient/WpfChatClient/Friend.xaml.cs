@@ -39,7 +39,7 @@ namespace WpfChatClient
             stream.Write(buffer, 0, buffer.Length);
             stream.Flush();
             
-            friend_list.ItemsSource = FriendData.Current.DataSource;
+            friend_list.ItemsSource = Data.Current.FriendList;
         }
 
         private void Add_friend_Click(object sender, RoutedEventArgs e)

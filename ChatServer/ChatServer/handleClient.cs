@@ -109,6 +109,19 @@ namespace ChatServer
                         }
                     }
                 }
+                ds = new DataSet();
+                sql = "SELECT room_num FROM chat_user WHERE user_id = '" + des_json.user_id + "'";
+                adpt = new MySqlDataAdapter(sql, MainForm.conn);
+                adpt.Fill(ds, "chat_user");
+                if (ds.Tables.Count > 0)
+                {
+                    //dp.work = "friend_list_re";
+                    dp.chat_list = new List<int>();
+                    foreach (DataRow r in ds.Tables[0].Rows)
+                    {
+                        dp.chat_list.Add(Convert.ToInt32(r["room_num"]));
+                    }
+                }
             }
             catch (MySqlException ex)
             {
