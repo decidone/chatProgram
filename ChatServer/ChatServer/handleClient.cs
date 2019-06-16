@@ -70,6 +70,8 @@ namespace ChatServer
                         new_chat(des_json, stream);
                     if (des_json.work == "invite_friend")
                         invite_friend(des_json, stream);
+                    if (des_json.work == "chat_out")
+                        chat_out(des_json, stream);
                 }
             }
             catch (Exception ex)
@@ -322,6 +324,7 @@ namespace ChatServer
         }
         #endregion
 
+        #region invite_friend
         private void invite_friend(DataPacket des_json, NetworkStream stream)
         {
             DataPacket dp = new DataPacket();
@@ -353,5 +356,39 @@ namespace ChatServer
 
             MainForm.conn.Close();
         }
+        #endregion
+
+        #region chat_out
+        private void chat_out(DataPacket des_json, NetworkStream stream)
+        {
+            DataPacket dp = new DataPacket();
+            MainForm.conn.Open();
+            try
+            {
+                String sql = "UPDATE chat_user SET user_in_room = '0' WHERE room_num = '" + des_json.room_num + "' AND user_id = '" + des_json.user_id + "'";
+                MySqlCommand cmd = new MySqlCommand(sql, MainForm.conn);
+                cmd.ExecuteNonQuery();
+                //Print(des_json.room_num.ToString());
+                dp.work = "chat_out_re";
+            }
+            catch (MySqlException ex)
+            {
+                //Print(ex.ToString());
+                dp.work = "error";
+                dp.message = "이미 채팅방에 초대되어있는 유저입니다.";
+            }
+            catch (Exception ex)
+            {
+                Print(ex.ToString());
+            }
+
+            string json = JsonConvert.SerializeObject(dp, Formatting.Indented);
+            byte[] buffer = Encoding.Unicode.GetBytes(json + "$");
+            stream.Write(buffer, 0, buffer.Length);
+            stream.Flush();
+
+            MainForm.conn.Close();
+        }
+        #endregion
     }
 }

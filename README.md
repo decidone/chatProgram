@@ -14,6 +14,7 @@ Work
 	del_friend - del_friend_re
 	new_chat - new_chat_re
 	invite_friend - invite_friend_re
+	chat_out - chat_out_re
 	
 
 프로그램 실행 시 소켓 연결, 종료 시 소켓 연결 끊음

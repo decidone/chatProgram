@@ -115,6 +115,10 @@ namespace WpfChatClient
                     {
                         MessageBox.Show(des_json.message);
                     }
+                    if (des_json.work == "chat_out_re")
+                    {
+                        Move("Menu");
+                    }
                 }
             }
             catch (Exception ex)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
@@ -31,6 +32,20 @@ namespace WpfChatClient
         private void Invite_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Source = new Uri("/FriendList.xaml", UriKind.Relative);
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            DataPacket dp = new DataPacket
+            {
+                work = "chat_out",
+                room_num = MainWindow.chat_room,
+                user_id = MainWindow.userId
+            };
+            string json = JsonConvert.SerializeObject(dp, Formatting.Indented);
+            byte[] buffer = Encoding.Unicode.GetBytes(json + "$");
+            stream.Write(buffer, 0, buffer.Length);
+            stream.Flush();
         }
     }
 }
