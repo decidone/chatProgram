@@ -93,11 +93,12 @@ namespace ChatServer
             try
             {
                 DataSet ds = new DataSet();
-                string sql = "SELECT user_pw FROM user WHERE user_id = '"+ des_json.user_id + "'";
+                string sql = "SELECT user.user_pw, chat_user.room_num FROM user, chat_user WHERE user.user_id = '"+ des_json.user_id + "'";
                 MySqlDataAdapter adpt = new MySqlDataAdapter(sql, MainForm.conn);
                 adpt.Fill(ds, "user");
                 if (ds.Tables.Count > 0)
                 {
+                    dp.chat_list = new List<int>();
                     foreach (DataRow r in ds.Tables[0].Rows)
                     {
                         if(r["user_pw"].ToString() == des_json.user_pw)
@@ -105,23 +106,24 @@ namespace ChatServer
                             dp.work = "login_re";
                             dp.message = "로그인 성공";
                             dp.user_id = des_json.user_id;
-                            Print(des_json.user_id + " 로그인");
+                            //Print(des_json.user_id + " 로그인");
                         }
-                    }
-                }
-                ds = new DataSet();
-                sql = "SELECT room_num FROM chat_user WHERE user_id = '" + des_json.user_id + "'";
-                adpt = new MySqlDataAdapter(sql, MainForm.conn);
-                adpt.Fill(ds, "chat_user");
-                if (ds.Tables.Count > 0)
-                {
-                    //dp.work = "friend_list_re";
-                    dp.chat_list = new List<int>();
-                    foreach (DataRow r in ds.Tables[0].Rows)
-                    {
                         dp.chat_list.Add(Convert.ToInt32(r["room_num"]));
                     }
                 }
+                //ds = new DataSet();
+                //sql = "SELECT room_num FROM chat_user WHERE user_id = '" + des_json.user_id + "'";
+                //adpt = new MySqlDataAdapter(sql, MainForm.conn);
+                //adpt.Fill(ds, "chat_user");
+                //if (ds.Tables.Count > 0)
+                //{
+                //    //dp.work = "friend_list_re";
+                //    dp.chat_list = new List<int>();
+                //    foreach (DataRow r in ds.Tables[0].Rows)
+                //    {
+                //        dp.chat_list.Add(Convert.ToInt32(r["room_num"]));
+                //    }
+                //}
             }
             catch (MySqlException ex)
             {
