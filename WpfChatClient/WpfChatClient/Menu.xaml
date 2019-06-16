@@ -10,7 +10,7 @@
 
     <Grid>
         <Button x:Name="newchat" Content="새 채팅방" HorizontalAlignment="Left" Margin="50,39,0,0" VerticalAlignment="Top" Width="75" Click="Newchat_Click"/>
-        <ListView Margin="152,38,409,87" x:Name="chat_room_list">
+        <ListView Margin="152,38,409,87" x:Name="chat_room_list" MouseDoubleClick="double_click">
             <ListView.View>
                 <GridView>
                     <GridViewColumn x:Name="sel" Header="Chat Room" Width="120" DisplayMemberBinding="{Binding chat_room}" />

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
@@ -60,6 +61,28 @@ namespace WpfChatClient
         {
             MainWindow.userId = null;
             NavigationService.Source = new Uri("/login.xaml", UriKind.Relative);
+        }
+
+        private void double_click(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            IInputElement element = e.MouseDevice.DirectlyOver;
+            if (element != null && element is FrameworkElement)
+            {
+                if (((FrameworkElement)element).Parent is DataGridCell)
+                {
+                    var grid = sender as DataGrid;
+                    if (grid != null && grid.SelectedItems != null
+        && grid.SelectedItems.Count == 1)
+                    {
+                        var rowView = grid.SelectedItem as DataRowView;
+                        if (rowView != null)
+                        {
+                            DataRow row = rowView.Row;
+                            //do something with the underlying data
+                        }
+                    }
+                }
+            }
         }
     }
 }
