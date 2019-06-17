@@ -43,7 +43,7 @@ namespace WpfChatClient
             byte[] buffer = Encoding.Unicode.GetBytes(json + "$");
             stream.Write(buffer, 0, buffer.Length);
             stream.Flush();
-
+            ChatMessage.Current.Chat.Clear();
             NavigationService.Source = new Uri("/ChatRoom.xaml", UriKind.Relative);
         }
 
@@ -66,7 +66,6 @@ namespace WpfChatClient
         private void double_click(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             Data data = (Data)chat_room_list.SelectedItems[0];
-            System.Windows.MessageBox.Show(data.chat_room.ToString());
             MainWindow.chat_room = Convert.ToInt32(data.chat_room);
 
             DataPacket dp = new DataPacket

@@ -15,7 +15,7 @@ namespace ChatServer
     class handleClient
     {
         TcpClient client = null;
-        public List<TcpClient> clientList = null;
+        public Dictionary<TcpClient, string> clientList = null;
         
         public void startClient(TcpClient clientSocket)
         {
