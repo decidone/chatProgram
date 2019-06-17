@@ -13,6 +13,7 @@
         <TextBox x:Name="textBox2" HorizontalAlignment="Left" Height="23" Margin="236,148,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
         <TextBox x:Name="textBox3" HorizontalAlignment="Left" Height="23" Margin="236,176,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
         <Button Content="가입하기" HorizontalAlignment="Left" Margin="281,204,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+        <Button Content="로그인 페이지로" HorizontalAlignment="Left" Margin="281,229,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
 
     </Grid>
 </Page>

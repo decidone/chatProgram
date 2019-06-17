@@ -20,7 +20,7 @@
             </ListView.View>
         </ListView>
         <Button x:Name="invite" Content="친구초대" HorizontalAlignment="Left" Margin="624,32,0,0" VerticalAlignment="Top" Width="75" Click="Invite_Click"/>
-        <Button Content="메뉴로 돌아가기" HorizontalAlignment="Left" Margin="624,95,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+        <Button Content="메뉴로" HorizontalAlignment="Left" Margin="624,95,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
         <Button Content="채팅방 나가기" HorizontalAlignment="Left" Margin="624,248,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
         <TextBox x:Name="message" HorizontalAlignment="Left" Height="23" Margin="10,363,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="225"/>
         <Button Content="전송" HorizontalAlignment="Left" Margin="253,363,0,0" VerticalAlignment="Top" Width="75" Height="23" Click="Button_Click_2"/>

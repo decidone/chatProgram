@@ -19,6 +19,7 @@
 
         <TextBox x:Name="sel_friend" HorizontalAlignment="Left" Height="23" Margin="284,66,0,0" TextWrapping="Wrap" Text="{Binding SelectedItem.friend_id, ElementName=sel_friend_list}" VerticalAlignment="Top" Width="120"/>
         <Button x:Name="invite_friend" Content="초대" HorizontalAlignment="Left" Margin="329,106,0,0" VerticalAlignment="Top" Width="75" Click="Invite_friend_Click"/>
+        <Button x:Name="back" Content="뒤로" HorizontalAlignment="Left" Margin="329,338,0,0" VerticalAlignment="Top" Width="75" Click="Back_Click"/>
 
     </Grid>
 </Page>

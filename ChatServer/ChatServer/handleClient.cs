@@ -557,7 +557,6 @@ namespace ChatServer
                             sql = "UPDATE chat_user SET last_chat = (SELECT MAX(chat_num) FROM chat) WHERE room_num = '" + des_json.room_num + "' AND user_id = '" + pair.Value + "'";
                             cmd = new MySqlCommand(sql, MainForm.conn);
                             cmd.ExecuteNonQuery();
-                            Print("끼요옷");
                         }
                     }
                 }

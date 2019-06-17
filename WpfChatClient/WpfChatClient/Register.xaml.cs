@@ -46,5 +46,10 @@ namespace WpfChatClient
         {
             NavigationService.Source = new Uri("/Register.xaml", UriKind.Relative);
         }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Source = new Uri("/Login.xaml", UriKind.Relative);
+        }
     }
 }

@@ -69,5 +69,10 @@ namespace WpfChatClient
             stream.Write(buffer, 0, buffer.Length);
             stream.Flush();
         }
+
+        private void Menu_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Source = new Uri("/Menu.xaml", UriKind.Relative);
+        }
     }
 }
