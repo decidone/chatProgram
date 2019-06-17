@@ -15,12 +15,9 @@ namespace ChatServer
     class handleClient
     {
         TcpClient client = null;
-        public Dictionary<TcpClient, string> clientList = null;
-        
         public void startClient(TcpClient clientSocket)
         {
             this.client = clientSocket;
-            //this.clientList = clientList;
 
             Thread tr = new Thread(run);
             tr.IsBackground = true;

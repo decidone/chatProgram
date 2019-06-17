@@ -21,7 +21,7 @@ namespace ChatServer
         TcpClient client = null;
         public static MySqlConnection conn = new MySqlConnection("Server=localhost; Database=chat_program; Uid=root; Pwd=cs1234;");
         //public Dictionary<TcpClient, string> clientList = new Dictionary<TcpClient, string>();
-        public List<TcpClient> clientList = new List<TcpClient>();
+        public Dictionary<TcpClient, string> clientList = new Dictionary<TcpClient, string>();
 
         public MainForm()
         {
@@ -48,7 +48,7 @@ namespace ChatServer
                     //나중에 로그인 생기면 이것도 필요없을듯
                     DisplayText(">> Accept connection from client");
                     
-                    clientList.Add(client);
+                    clientList.Add(client, null);
                     //SendMessageAll(user_name + " Joined ", "", false);
                     handleClient h_client = new handleClient();
                     h_client.Print += new handleClient.MessageDisplayHandler(Print);
@@ -73,7 +73,7 @@ namespace ChatServer
 
         void h_client_OnDisconnected(TcpClient clientSocket)
         {
-            if (clientList.Contains(clientSocket))
+            if (clientList.ContainsKey(clientSocket))
             {
                 clientList.Remove(clientSocket);
                 DisplayText(">> Disconnected connection from client");
@@ -95,7 +95,7 @@ namespace ChatServer
             {
                 Console.WriteLine(string.Format("tcpclient : {0}", pair));
 
-                TcpClient client = pair as TcpClient;
+                TcpClient client = pair.Key as TcpClient;
                 NetworkStream stream = client.GetStream();
                 byte[] buffer = null;
 

@@ -78,8 +78,6 @@ namespace WpfChatClient
             byte[] buffer = Encoding.Unicode.GetBytes(json + "$");
             stream.Write(buffer, 0, buffer.Length);
             stream.Flush();
-
-            //NavigationService.Source = new Uri("/ChatRoom.xaml", UriKind.Relative);
         }
     }
 }
