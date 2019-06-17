@@ -75,6 +75,8 @@ namespace ChatServer
                         chat_in(des_json, stream);
                     if (des_json.work == "send_message")
                         send_message(des_json, stream);
+                    if (des_json.work == "user_update")
+                        user_update(des_json, stream);
                 }
             }
             catch (Exception ex)
@@ -584,6 +586,40 @@ namespace ChatServer
                     }
                 }
             }
+        }
+        #endregion
+
+        #region user_update
+        private void user_update(DataPacket des_json, NetworkStream stream)
+        {
+            DataPacket dp = new DataPacket();
+            MainForm.conn.Open();
+            try
+            {
+                String sql = "UPDATE user SET user_pw = '" + des_json.user_pw + "', user_name = '" + des_json.user_name + "' WHERE user_id = '" + des_json.user_id + "'";
+                MySqlCommand cmd = new MySqlCommand(sql, MainForm.conn);
+                cmd.ExecuteNonQuery();
+
+                //Print(des_json.user_id.ToString());
+                dp.work = "user_update_re";
+                dp.message = "정보가 변경되었습니다.";
+            }
+            catch (MySqlException ex)
+            {
+                Print(ex.ToString());
+                dp.work = "error";
+                dp.message = "변경 실패";
+            }
+            catch (Exception ex)
+            {
+                Print(ex.ToString());
+            }
+            MainForm.conn.Close();
+
+            string json = JsonConvert.SerializeObject(dp, Formatting.Indented);
+            byte[] buffer = Encoding.Unicode.GetBytes(json + "$");
+            stream.Write(buffer, 0, buffer.Length);
+            stream.Flush();
         }
         #endregion
     }

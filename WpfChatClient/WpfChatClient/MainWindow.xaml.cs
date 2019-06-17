@@ -157,6 +157,10 @@ namespace WpfChatClient
                             frame.NavigationService.Refresh();
                         }));
                     }
+                    if (des_json.work == "user_update_re")
+                    {
+                        MessageBox.Show(des_json.message);
+                    }
                 }
             }
             catch (Exception ex)
