@@ -483,7 +483,7 @@ namespace ChatServer
             MainForm.conn.Open();
             try
             {
-                String sql = "UPDATE chat_user SET user_in_room = '1' WHERE room_num = '" + des_json.room_num + "' AND user_id = '" + des_json.user_id + "'";
+                String sql = "UPDATE chat_user SET user_in_room = '1', last_chat = (SELECT MAX(chat_num) FROM chat) WHERE room_num = '" + des_json.room_num + "' AND user_id = '" + des_json.user_id + "'";
                 MySqlCommand cmd = new MySqlCommand(sql, MainForm.conn);
                 cmd.ExecuteNonQuery();
 
@@ -537,9 +537,35 @@ namespace ChatServer
                 cmd.ExecuteNonQuery();
 
                 DataSet ds = new DataSet();
+                sql = "SELECT user_id FROM chat_user WHERE room_num = '" + des_json.room_num + "' AND user_in_room = '1'";
+                MySqlDataAdapter adpt = new MySqlDataAdapter(sql, MainForm.conn);
+                adpt.Fill(ds, "chat_user");
+                if (ds.Tables.Count > 0)
+                {
+                    foreach (DataRow r in ds.Tables[0].Rows)
+                    {
+                        user_in_room.Add(r["user_id"].ToString());
+                    }
+                }
+
+                foreach (var pair in MainForm.clientList)
+                {
+                    for (int i = 0; i < user_in_room.Count; i++)
+                    {
+                        if (pair.Value == user_in_room[i])
+                        {
+                            sql = "UPDATE chat_user SET last_chat = (SELECT MAX(chat_num) FROM chat) WHERE room_num = '" + des_json.room_num + "' AND user_id = '" + pair.Value + "'";
+                            cmd = new MySqlCommand(sql, MainForm.conn);
+                            cmd.ExecuteNonQuery();
+                            Print("끼요옷");
+                        }
+                    }
+                }
+                
+                ds = new DataSet();
                 sql = "SELECT user_id, chat_message, chat_time, (SELECT COUNT(DISTINCT chat_user.user_id) FROM chat, chat_user WHERE chat.room_num = chat_user.room_num AND chat.chat_num > chat_user.last_chat AND chat.room_num = '" + des_json.room_num + "') AS 'not_read' FROM chat where room_num = '" + des_json.room_num + "'";
 
-                MySqlDataAdapter adpt = new MySqlDataAdapter(sql, MainForm.conn);
+                adpt = new MySqlDataAdapter(sql, MainForm.conn);
                 adpt.Fill(ds, "chat");
                 if (ds.Tables.Count > 0)
                 {
@@ -551,17 +577,6 @@ namespace ChatServer
                 }
                 dp.work = "send_message_re";
 
-                ds = new DataSet();
-                sql = "SELECT user_id FROM chat_user WHERE room_num = '" + des_json.room_num + "' AND user_in_room = '1'";
-                adpt = new MySqlDataAdapter(sql, MainForm.conn);
-                adpt.Fill(ds, "chat_user");
-                if (ds.Tables.Count > 0)
-                {
-                    foreach (DataRow r in ds.Tables[0].Rows)
-                    {
-                        user_in_room.Add(r["user_id"].ToString());
-                    }
-                }
             }
             catch (MySqlException ex)
             {
