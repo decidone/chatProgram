@@ -114,6 +114,7 @@ namespace ChatServer
                             dp.message = "로그인 성공";
                             dp.user_id = des_json.user_id;
                             Print(des_json.user_id + " 로그인");
+                            MainForm.clientList[client] = des_json.user_id;
                             //Print(des_json.user_id + " 로그인");
                         }
                     }

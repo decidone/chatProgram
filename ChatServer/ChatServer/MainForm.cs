@@ -21,7 +21,7 @@ namespace ChatServer
         TcpClient client = null;
         public static MySqlConnection conn = new MySqlConnection("Server=localhost; Database=chat_program; Uid=root; Pwd=cs1234;");
         //public Dictionary<TcpClient, string> clientList = new Dictionary<TcpClient, string>();
-        public Dictionary<TcpClient, string> clientList = new Dictionary<TcpClient, string>();
+        public static Dictionary<TcpClient, string> clientList = new Dictionary<TcpClient, string>();
 
         public MainForm()
         {
@@ -75,10 +75,27 @@ namespace ChatServer
         {
             if (clientList.ContainsKey(clientSocket))
             {
+                string userId = clientList[clientSocket];
                 clientList.Remove(clientSocket);
                 DisplayText(">> Disconnected connection from client");
-            }
 
+                conn.Open();
+                try
+                {
+                    String sql = "UPDATE chat_user SET user_in_room = '0' WHERE user_id = '" + userId + "'";
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    cmd.ExecuteNonQuery();
+                }
+                catch (MySqlException ex)
+                {
+                    Print(ex.ToString());
+                }
+                catch (Exception ex)
+                {
+                    Print(ex.ToString());
+                }
+                conn.Close();
+            }
         }
         
         private void Print(string text)
