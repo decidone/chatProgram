@@ -42,16 +42,26 @@ namespace WpfChatClient
                 OnPropertyChanged("chat_time");
             }
         }
+
+        private int _not_read;
+
+        public int not_read
+        {
+            get { return _not_read; }
+            set { _not_read = value; }
+        }
+
         public ChatMessage()
         {
 
         }
 
-        public ChatMessage(string chat_id, string chat_message, DateTime chat_time)
+        public ChatMessage(string chat_id, string chat_message, DateTime chat_time, int not_read)
         {
             this.chat_id = chat_id;
             this.chat_message = chat_message;
             this.chat_time = chat_time;
+            this.not_read = not_read;
         }
 
         public static ChatMessage Current = new ChatMessage();

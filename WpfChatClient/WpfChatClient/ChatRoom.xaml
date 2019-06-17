@@ -9,37 +9,19 @@
       Title="ChatRoom">
 
     <Grid>
-        <ListView Margin="10,13,411,112" x:Name="friend_list">
+        <ListView Margin="10,14,260,111" x:Name="friend_list">
             <ListView.View>
                 <GridView>
                     <GridViewColumn x:Name="sel_id" Header="user" Width="100" DisplayMemberBinding="{Binding chat_id}" />
                     <GridViewColumn x:Name="sel_message" Header="message" Width="150" DisplayMemberBinding="{Binding chat_message}" />
                     <GridViewColumn x:Name="sel_time" Header="time" Width="120" DisplayMemberBinding="{Binding chat_time}" />
+                    <GridViewColumn x:Name="sel_read" Header="not_read" Width="120" DisplayMemberBinding="{Binding not_read}" />
                 </GridView>
             </ListView.View>
         </ListView>
-        <ListBox Grid.ColumnSpan="1"
-                 Margin="499,29,26,128">
-            <!--<ListBox.ItemsSource>
-                <data:Talk />
-            </ListBox.ItemsSource>-->
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Width="300">
-                        <StackPanel Orientation="Horizontal">
-                            <!--<Image Source="chat.png" Width="20" />-->
-                            <TextBlock Text="asd" />
-                        </StackPanel>
-                        <TextBlock Text="asd"
-                                   Margin="20,0,0,0"
-                                   TextWrapping="Wrap" />
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-        <Button x:Name="invite" Content="친구초대" HorizontalAlignment="Left" Margin="394,29,0,0" VerticalAlignment="Top" Width="75" Click="Invite_Click"/>
-        <Button Content="메뉴로 돌아가기" HorizontalAlignment="Left" Margin="394,95,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
-        <Button Content="채팅방 나가기" HorizontalAlignment="Left" Margin="394,288,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
+        <Button x:Name="invite" Content="친구초대" HorizontalAlignment="Left" Margin="624,32,0,0" VerticalAlignment="Top" Width="75" Click="Invite_Click"/>
+        <Button Content="메뉴로 돌아가기" HorizontalAlignment="Left" Margin="624,95,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+        <Button Content="채팅방 나가기" HorizontalAlignment="Left" Margin="624,248,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
         <TextBox x:Name="message" HorizontalAlignment="Left" Height="23" Margin="10,363,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="225"/>
         <Button Content="전송" HorizontalAlignment="Left" Margin="253,363,0,0" VerticalAlignment="Top" Width="75" Height="23" Click="Button_Click_2"/>
     </Grid>

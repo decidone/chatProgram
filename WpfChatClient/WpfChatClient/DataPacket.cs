@@ -11,12 +11,13 @@ namespace WpfChatClient
         public string chat_id { get; set; }
         public string chat_message { get; set; }
         public DateTime chat_time { get; set; }
-
-        public Chat(string chat_id, string chat_message, DateTime chat_time)
+        public int not_read { get; set; }
+        public Chat(string chat_id, string chat_message, DateTime chat_time, int not_read)
         {
             this.chat_id = chat_id;
             this.chat_message = chat_message;
             this.chat_time = chat_time;
+            this.not_read = not_read;
         }
     }
 

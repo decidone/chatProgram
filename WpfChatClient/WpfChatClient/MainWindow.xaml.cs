@@ -140,7 +140,7 @@ namespace WpfChatClient
                         IList<Chat> list = des_json.chat;
                         for (int i = 0; i < list.Count; i++)
                         {
-                            ChatMessage.Current.Chat.Add(new ChatMessage(list[i].chat_id, list[i].chat_message, list[i].chat_time));
+                            ChatMessage.Current.Chat.Add(new ChatMessage(list[i].chat_id, list[i].chat_message, list[i].chat_time, list[i].not_read));
                         }
                         Move("ChatRoom");
                     }
@@ -150,7 +150,7 @@ namespace WpfChatClient
                         IList<Chat> list = des_json.chat;
                         for (int i = 0; i < list.Count; i++)
                         {
-                            ChatMessage.Current.Chat.Add(new ChatMessage(list[i].chat_id, list[i].chat_message, list[i].chat_time));
+                            ChatMessage.Current.Chat.Add(new ChatMessage(list[i].chat_id, list[i].chat_message, list[i].chat_time, list[i].not_read));
                         }
                         Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
                         {

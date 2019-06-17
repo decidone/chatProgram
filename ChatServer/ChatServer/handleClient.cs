@@ -325,7 +325,7 @@ namespace ChatServer
                 rdr.Close();
 
                 int roomNum = Convert.ToInt32(str_Temp);
-                sql = "INSERT INTO chat_user VALUES('" + roomNum + "','" + des_json.user_id + "', '1', null)";
+                sql = "INSERT INTO chat_user VALUES('" + roomNum + "','" + des_json.user_id + "', '1', '0')";
                 cmd = new MySqlCommand(sql, MainForm.conn);
                 cmd.ExecuteNonQuery();
                 
@@ -359,7 +359,7 @@ namespace ChatServer
             MainForm.conn.Open();
             try
             {
-                String sql = "INSERT INTO chat_user VALUES('" + des_json.room_num + "', '" + des_json.friend_id + "', '0', null)";
+                String sql = "INSERT INTO chat_user VALUES('" + des_json.room_num + "', '" + des_json.friend_id + "', '0', '0')";
                 MySqlCommand cmd = new MySqlCommand(sql, MainForm.conn);
                 cmd.ExecuteNonQuery();
                 //Print(des_json.room_num.ToString());
@@ -488,18 +488,20 @@ namespace ChatServer
                 cmd.ExecuteNonQuery();
 
                 DataSet ds = new DataSet();
-                sql = "SELECT user_id, chat_message, chat_time FROM chat WHERE room_num = '" + des_json.room_num + "'";
+                sql = "SELECT user_id, chat_message, chat_time, (SELECT COUNT(DISTINCT chat_user.user_id) FROM chat, chat_user WHERE chat.room_num = chat_user.room_num AND chat.chat_num > chat_user.last_chat AND chat.room_num = '" + des_json.room_num + "') AS 'not_read' FROM chat where room_num = '" + des_json.room_num + "'";
+
+                //"SELECT user_id, chat_message, chat_time FROM chat WHERE room_num = '" + des_json.room_num + "'";
                 MySqlDataAdapter adpt = new MySqlDataAdapter(sql, MainForm.conn);
-                adpt.Fill(ds, "chat");
+                adpt.Fill(ds, "chat1");
                 if (ds.Tables.Count > 0)
                 {
                     dp.chat = new List<Chat>();
                     foreach (DataRow r in ds.Tables[0].Rows)
                     {
-                        dp.chat.Add(new Chat(r["user_id"].ToString(), r["chat_message"].ToString(), Convert.ToDateTime(r["chat_time"])));
+                        dp.chat.Add(new Chat(r["user_id"].ToString(), r["chat_message"].ToString(), Convert.ToDateTime(r["chat_time"]), Convert.ToInt32(r["not_read"])));
                     }
                 }
-                
+
                 dp.work = "chat_in_re";
             }
             catch (MySqlException ex)
@@ -535,7 +537,8 @@ namespace ChatServer
                 cmd.ExecuteNonQuery();
 
                 DataSet ds = new DataSet();
-                sql = "SELECT user_id, chat_message, chat_time FROM chat WHERE room_num = '" + des_json.room_num + "'";
+                sql = "SELECT user_id, chat_message, chat_time, (SELECT COUNT(DISTINCT chat_user.user_id) FROM chat, chat_user WHERE chat.room_num = chat_user.room_num AND chat.chat_num > chat_user.last_chat AND chat.room_num = '" + des_json.room_num + "') AS 'not_read' FROM chat where room_num = '" + des_json.room_num + "'";
+
                 MySqlDataAdapter adpt = new MySqlDataAdapter(sql, MainForm.conn);
                 adpt.Fill(ds, "chat");
                 if (ds.Tables.Count > 0)
@@ -543,7 +546,7 @@ namespace ChatServer
                     dp.chat = new List<Chat>();
                     foreach (DataRow r in ds.Tables[0].Rows)
                     {
-                        dp.chat.Add(new Chat(r["user_id"].ToString(), r["chat_message"].ToString(), Convert.ToDateTime(r["chat_time"])));
+                        dp.chat.Add(new Chat(r["user_id"].ToString(), r["chat_message"].ToString(), Convert.ToDateTime(r["chat_time"]), Convert.ToInt32(r["not_read"])));
                     }
                 }
                 dp.work = "send_message_re";
