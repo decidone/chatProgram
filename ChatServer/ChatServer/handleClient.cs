@@ -74,6 +74,8 @@ namespace ChatServer
                         chat_out(des_json, stream);
                     if (des_json.work == "chat_room_out")
                         chat_room_out(des_json, stream);
+                    if (des_json.work == "chat_in")
+                        chat_in(des_json, stream);
                 }
             }
             catch (Exception ex)
@@ -191,13 +193,21 @@ namespace ChatServer
             MainForm.conn.Open();
             try
             {
-                String sql = "INSERT INTO friend (user_id, friend_id) " +
-                                "VALUES ('" + des_json.user_id + "', '" + des_json.friend_id + "')";
-                MySqlCommand cmd = new MySqlCommand(sql, MainForm.conn);
-                cmd.ExecuteNonQuery();
-                Print("친구 추가 : " + des_json.user_id + " : " + des_json.friend_id);
-                dp.work = "add_friend_re";
-                dp.message = "등록 완료";
+                if (des_json.user_id != des_json.friend_id)
+                {
+                    String sql = "INSERT INTO friend (user_id, friend_id) " +
+                                                    "VALUES ('" + des_json.user_id + "', '" + des_json.friend_id + "')";
+                    MySqlCommand cmd = new MySqlCommand(sql, MainForm.conn);
+                    cmd.ExecuteNonQuery();
+                    Print("친구 추가 : " + des_json.user_id + " : " + des_json.friend_id);
+                    dp.work = "add_friend_re";
+                    dp.message = "등록 완료";
+                }
+                else
+                {
+                    dp.work = "error";
+                    dp.message = "친구추가 할 아이디를 다시 한 번 확인해주세요.";
+                }
             }
             catch (MySqlException ex)
             {
@@ -425,6 +435,54 @@ namespace ChatServer
                 //Print(ex.ToString());
                 dp.work = "error";
                 dp.message = "이미 채팅방에서 나갔습니다.";
+            }
+            catch (Exception ex)
+            {
+                Print(ex.ToString());
+            }
+
+            string json = JsonConvert.SerializeObject(dp, Formatting.Indented);
+            byte[] buffer = Encoding.Unicode.GetBytes(json + "$");
+            stream.Write(buffer, 0, buffer.Length);
+            stream.Flush();
+
+            MainForm.conn.Close();
+        }
+        #endregion
+
+        #region chat_in
+        private void chat_in(DataPacket des_json, NetworkStream stream)
+        {
+            DataPacket dp = new DataPacket();
+            MainForm.conn.Open();
+            try
+            {
+                String sql = "UPDATE chat_user SET user_in_room = '1' WHERE room_num = '" + des_json.room_num + "' AND user_id = '" + des_json.user_id + "'";
+                MySqlCommand cmd = new MySqlCommand(sql, MainForm.conn);
+                cmd.ExecuteNonQuery();
+
+                DataSet ds = new DataSet();
+                sql = "SELECT user_id, chat_message, chat_time FROM chat WHERE room_num = '" + des_json.room_num + "'";
+                MySqlDataAdapter adpt = new MySqlDataAdapter(sql, MainForm.conn);
+                adpt.Fill(ds, "chat");
+                if (ds.Tables.Count > 0)
+                {
+                    dp.chat = new List<Chat>();
+                    foreach (DataRow r in ds.Tables[0].Rows)
+                    {
+                        dp.chat.Add(new Chat(r["user_id"].ToString(), r["chat_message"].ToString(), Convert.ToDateTime(r["chat_time"])));
+                        //dp.friend_list.Add(r["friend_id"].ToString());
+                    }
+                }
+
+                //Print(des_json.room_num.ToString());
+                dp.work = "chat_in_re";
+            }
+            catch (MySqlException ex)
+            {
+                Print(ex.ToString());
+                dp.work = "error";
+                dp.message = "이미 채팅방에 초대되어있는 유저입니다.";
             }
             catch (Exception ex)
             {

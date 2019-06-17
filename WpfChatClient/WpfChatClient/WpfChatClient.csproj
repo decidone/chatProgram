@@ -60,6 +60,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ChatMessage.cs" />
     <Compile Include="ChatRoom.xaml.cs">
       <DependentUpon>ChatRoom.xaml</DependentUpon>
     </Compile>

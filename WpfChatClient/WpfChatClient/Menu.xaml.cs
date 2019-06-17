@@ -67,6 +67,20 @@ namespace WpfChatClient
         {
             Data data = (Data)chat_room_list.SelectedItems[0];
             System.Windows.MessageBox.Show(data.chat_room.ToString());
+            MainWindow.chat_room = Convert.ToInt32(data.chat_room);
+
+            DataPacket dp = new DataPacket
+            {
+                work = "chat_in",
+                user_id = MainWindow.userId,
+                room_num = MainWindow.chat_room
+            };
+            string json = JsonConvert.SerializeObject(dp, Formatting.Indented);
+            byte[] buffer = Encoding.Unicode.GetBytes(json + "$");
+            stream.Write(buffer, 0, buffer.Length);
+            stream.Flush();
+
+            //NavigationService.Source = new Uri("/ChatRoom.xaml", UriKind.Relative);
         }
     }
 }

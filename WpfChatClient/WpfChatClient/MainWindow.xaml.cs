@@ -36,7 +36,6 @@ namespace WpfChatClient
             client.Connect("127.0.0.1", 9999);
             stream = client.GetStream();
             
-
             tr = new Thread(GetJSON);
             tr.IsBackground = true;
             tr.Start();
@@ -122,6 +121,16 @@ namespace WpfChatClient
                     if (des_json.work == "chat_room_out_re")
                     {
                         Move("Menu");
+                    }
+                    if (des_json.work == "chat_in_re")
+                    {
+                        ChatMessage.Current.Chat.Clear();
+                        IList<Chat> list = des_json.chat;
+                        for (int i = 0; i < list.Count; i++)
+                        {
+                            ChatMessage.Current.Chat.Add(new ChatMessage(list[i].chat_id, list[i].chat_message, list[i].chat_time));
+                        }
+                        Move("ChatRoom");
                     }
                 }
             }

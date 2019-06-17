@@ -27,6 +27,8 @@ namespace WpfChatClient
         public ChatRoom()
         {
             InitializeComponent();
+
+            friend_list.ItemsSource = ChatMessage.Current.Chat;
         }
 
         private void Invite_Click(object sender, RoutedEventArgs e)

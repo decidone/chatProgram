@@ -16,6 +16,8 @@ Work
 	invite_friend - invite_friend_re
 	chat_out - chat_out_re
 	chat_room_out - chat_room_out_re
+	chat_in - chat_in_re
+	
 	
 
 프로그램 실행 시 소켓 연결, 종료 시 소켓 연결 끊음

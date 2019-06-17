@@ -9,8 +9,17 @@
       Title="ChatRoom">
 
     <Grid>
+        <ListView Margin="10,13,411,112" x:Name="friend_list">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn x:Name="sel_id" Header="user" Width="100" DisplayMemberBinding="{Binding chat_id}" />
+                    <GridViewColumn x:Name="sel_message" Header="message" Width="150" DisplayMemberBinding="{Binding chat_message}" />
+                    <GridViewColumn x:Name="sel_time" Header="time" Width="120" DisplayMemberBinding="{Binding chat_time}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
         <ListBox Grid.ColumnSpan="1"
-                 Margin="10,10,471,147">
+                 Margin="499,29,26,128">
             <!--<ListBox.ItemsSource>
                 <data:Talk />
             </ListBox.ItemsSource>-->
@@ -28,10 +37,10 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <Button x:Name="invite" Content="친구초대" HorizontalAlignment="Left" Margin="347,29,0,0" VerticalAlignment="Top" Width="75" Click="Invite_Click"/>
-        <Button Content="메뉴로 돌아가기" HorizontalAlignment="Left" Margin="347,76,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
-        <Button Content="채팅방 나가기" HorizontalAlignment="Left" Margin="347,283,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="10,321,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="225"/>
-        <Button Content="전송" HorizontalAlignment="Left" Margin="254,321,0,0" VerticalAlignment="Top" Width="75" Height="23"/>
+        <Button x:Name="invite" Content="친구초대" HorizontalAlignment="Left" Margin="394,29,0,0" VerticalAlignment="Top" Width="75" Click="Invite_Click"/>
+        <Button Content="메뉴로 돌아가기" HorizontalAlignment="Left" Margin="394,95,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+        <Button Content="채팅방 나가기" HorizontalAlignment="Left" Margin="394,288,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="10,363,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="225"/>
+        <Button Content="전송" HorizontalAlignment="Left" Margin="253,363,0,0" VerticalAlignment="Top" Width="75" Height="23"/>
     </Grid>
 </Page>
