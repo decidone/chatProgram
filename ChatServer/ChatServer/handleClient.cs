@@ -76,6 +76,8 @@ namespace ChatServer
                         chat_room_out(des_json, stream);
                     if (des_json.work == "chat_in")
                         chat_in(des_json, stream);
+                    if (des_json.work == "send_message")
+                        send_message(des_json, stream);
                 }
             }
             catch (Exception ex)
@@ -471,18 +473,62 @@ namespace ChatServer
                     foreach (DataRow r in ds.Tables[0].Rows)
                     {
                         dp.chat.Add(new Chat(r["user_id"].ToString(), r["chat_message"].ToString(), Convert.ToDateTime(r["chat_time"])));
-                        //dp.friend_list.Add(r["friend_id"].ToString());
                     }
                 }
-
-                //Print(des_json.room_num.ToString());
+                
                 dp.work = "chat_in_re";
             }
             catch (MySqlException ex)
             {
-                Print(ex.ToString());
+                //Print(ex.ToString());
                 dp.work = "error";
-                dp.message = "이미 채팅방에 초대되어있는 유저입니다.";
+                dp.message = "채팅방에 입장할 수 없습니다.";
+            }
+            catch (Exception ex)
+            {
+                Print(ex.ToString());
+            }
+
+            string json = JsonConvert.SerializeObject(dp, Formatting.Indented);
+            byte[] buffer = Encoding.Unicode.GetBytes(json + "$");
+            stream.Write(buffer, 0, buffer.Length);
+            stream.Flush();
+
+            MainForm.conn.Close();
+        }
+        #endregion
+
+        #region send_message
+        private void send_message(DataPacket des_json, NetworkStream stream)
+        {
+            DataPacket dp = new DataPacket();
+            MainForm.conn.Open();
+            try
+            {
+                String sql = "INSERT INTO chat(room_num, user_id, chat_message, chat_time) VALUES('" + des_json.room_num + "', '" + des_json.user_id + "', '" + des_json.message + "', now())";
+                MySqlCommand cmd = new MySqlCommand(sql, MainForm.conn);
+                cmd.ExecuteNonQuery();
+
+                DataSet ds = new DataSet();
+                sql = "SELECT user_id, chat_message, chat_time FROM chat WHERE room_num = '" + des_json.room_num + "'";
+                MySqlDataAdapter adpt = new MySqlDataAdapter(sql, MainForm.conn);
+                adpt.Fill(ds, "chat");
+                if (ds.Tables.Count > 0)
+                {
+                    dp.chat = new List<Chat>();
+                    foreach (DataRow r in ds.Tables[0].Rows)
+                    {
+                        dp.chat.Add(new Chat(r["user_id"].ToString(), r["chat_message"].ToString(), Convert.ToDateTime(r["chat_time"])));
+                    }
+                }
+
+                dp.work = "send_message_re";
+            }
+            catch (MySqlException ex)
+            {
+                //Print(ex.ToString());
+                dp.work = "error";
+                dp.message = "채팅방에 입장할 수 없습니다.";
             }
             catch (Exception ex)
             {

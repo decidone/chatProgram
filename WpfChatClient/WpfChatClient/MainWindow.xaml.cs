@@ -132,6 +132,19 @@ namespace WpfChatClient
                         }
                         Move("ChatRoom");
                     }
+                    if (des_json.work == "send_message_re")
+                    {
+                        ChatMessage.Current.Chat.Clear();
+                        IList<Chat> list = des_json.chat;
+                        for (int i = 0; i < list.Count; i++)
+                        {
+                            ChatMessage.Current.Chat.Add(new ChatMessage(list[i].chat_id, list[i].chat_message, list[i].chat_time));
+                        }
+                        Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+                        {
+                            frame.NavigationService.Refresh();
+                        }));
+                    }
                 }
             }
             catch (Exception ex)

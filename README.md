@@ -17,6 +17,7 @@ Work
 	chat_out - chat_out_re
 	chat_room_out - chat_room_out_re
 	chat_in - chat_in_re
+	send_message - send_message_re
 	
 	
 
