@@ -396,6 +396,18 @@ namespace ChatServer
                 cmd.ExecuteNonQuery();
                 //Print(des_json.room_num.ToString());
                 dp.work = "chat_out_re";
+                DataSet ds = new DataSet();
+                sql = "SELECT room_num FROM chat_user WHERE user_id = '" + des_json.user_id + "'";
+                MySqlDataAdapter adpt = new MySqlDataAdapter(sql, MainForm.conn);
+                adpt.Fill(ds, "chat_user");
+                if (ds.Tables.Count > 0)
+                {
+                    dp.chat_list = new List<int>();
+                    foreach (DataRow r in ds.Tables[0].Rows)
+                    {
+                        dp.chat_list.Add(Convert.ToInt32(r["room_num"]));
+                    }
+                }
             }
             catch (MySqlException ex)
             {
@@ -429,6 +441,18 @@ namespace ChatServer
                 cmd.ExecuteNonQuery();
                 //Print(des_json.room_num.ToString());
                 dp.work = "chat_room_out_re";
+                DataSet ds = new DataSet();
+                sql = "SELECT room_num FROM chat_user WHERE user_id = '" + des_json.user_id + "'";
+                MySqlDataAdapter adpt = new MySqlDataAdapter(sql, MainForm.conn);
+                adpt.Fill(ds, "chat_user");
+                if (ds.Tables.Count > 0)
+                {
+                    dp.chat_list = new List<int>();
+                    foreach (DataRow r in ds.Tables[0].Rows)
+                    {
+                        dp.chat_list.Add(Convert.ToInt32(r["room_num"]));
+                    }
+                }
             }
             catch (MySqlException ex)
             {

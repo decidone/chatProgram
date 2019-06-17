@@ -116,10 +116,22 @@ namespace WpfChatClient
                     }
                     if (des_json.work == "chat_out_re")
                     {
+                        Data.Current.ChatList.Clear();
+                        IList<int> list = des_json.chat_list;
+                        for (int i = 0; i < list.Count; i++)
+                        {
+                            Data.Current.ChatList.Add(new Data(list[i]));
+                        }
                         Move("Menu");
                     }
                     if (des_json.work == "chat_room_out_re")
                     {
+                        Data.Current.ChatList.Clear();
+                        IList<int> list = des_json.chat_list;
+                        for (int i = 0; i < list.Count; i++)
+                        {
+                            Data.Current.ChatList.Add(new Data(list[i]));
+                        }
                         Move("Menu");
                     }
                     if (des_json.work == "chat_in_re")
