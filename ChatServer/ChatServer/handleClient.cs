@@ -501,6 +501,7 @@ namespace ChatServer
         {
             DataPacket dp = new DataPacket();
             MainForm.conn.Open();
+            List<string> user_in_room = new List<string>();
             try
             {
                 String sql = "INSERT INTO chat(room_num, user_id, chat_message, chat_time) VALUES('" + des_json.room_num + "', '" + des_json.user_id + "', '" + des_json.message + "', now())";
@@ -519,26 +520,46 @@ namespace ChatServer
                         dp.chat.Add(new Chat(r["user_id"].ToString(), r["chat_message"].ToString(), Convert.ToDateTime(r["chat_time"])));
                     }
                 }
-
                 dp.work = "send_message_re";
+
+                ds = new DataSet();
+                sql = "SELECT user_id FROM chat_user WHERE room_num = '" + des_json.room_num + "' AND user_in_room = '1'";
+                adpt = new MySqlDataAdapter(sql, MainForm.conn);
+                adpt.Fill(ds, "chat_user");
+                if (ds.Tables.Count > 0)
+                {
+                    foreach (DataRow r in ds.Tables[0].Rows)
+                    {
+                        user_in_room.Add(r["user_id"].ToString());
+                    }
+                }
             }
             catch (MySqlException ex)
             {
                 //Print(ex.ToString());
                 dp.work = "error";
-                dp.message = "채팅방에 입장할 수 없습니다.";
+                dp.message = "채팅 수신오류";
             }
             catch (Exception ex)
             {
                 Print(ex.ToString());
             }
+            MainForm.conn.Close();
 
             string json = JsonConvert.SerializeObject(dp, Formatting.Indented);
             byte[] buffer = Encoding.Unicode.GetBytes(json + "$");
-            stream.Write(buffer, 0, buffer.Length);
-            stream.Flush();
-
-            MainForm.conn.Close();
+            foreach (var pair in MainForm.clientList)
+            {
+                for(int i = 0; i<user_in_room.Count; i++)
+                {
+                    if (pair.Value == user_in_room[i]) {
+                        TcpClient client = pair.Key as TcpClient;
+                        NetworkStream Stream = client.GetStream();
+                        Stream.Write(buffer, 0, buffer.Length);
+                        Stream.Flush();
+                    }
+                }
+            }
         }
         #endregion
     }
