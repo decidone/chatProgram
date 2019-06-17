@@ -15,7 +15,8 @@ CREATE TABLE chat_room(
 CREATE TABLE chat_user(
     room_num INT NOT NULL,
     user_id VARCHAR(15) NOT NULL,
-    user_in_room BOOLEAN
+    user_in_room BOOLEAN,
+    last_chat INT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE friend(
@@ -39,7 +40,8 @@ ALTER TABLE friend ADD PRIMARY KEY(user_id, friend_id);
 
 ALTER TABLE chat_user ADD CONSTRAINT chat_fk1 FOREIGN KEY(room_num) REFERENCES chat_room(room_num);
 ALTER TABLE chat_user ADD CONSTRAINT chat_fk2 FOREIGN KEY(user_id) REFERENCES user(user_id);
-ALTER TABLE friend ADD CONSTRAINT chat_fk3 FOREIGN KEY(user_id) REFERENCES user(user_id);
-ALTER TABLE friend ADD CONSTRAINT chat_fk4 FOREIGN KEY(friend_id) REFERENCES user(user_id);
-ALTER TABLE chat ADD CONSTRAINT chat_fk5 FOREIGN KEY(room_num) REFERENCES chat_room(room_num);
-ALTER TABLE chat ADD CONSTRAINT chat_fk6 FOREIGN KEY(user_id) REFERENCES user(user_id);
+ALTER TABLE chat_user ADD CONSTRAINT chat_fk3 FOREIGN KEY(last_chat) REFERENCES chat(chat_num);
+ALTER TABLE friend ADD CONSTRAINT chat_fk4 FOREIGN KEY(user_id) REFERENCES user(user_id);
+ALTER TABLE friend ADD CONSTRAINT chat_fk5 FOREIGN KEY(friend_id) REFERENCES user(user_id);
+ALTER TABLE chat ADD CONSTRAINT chat_fk6 FOREIGN KEY(room_num) REFERENCES chat_room(room_num);
+ALTER TABLE chat ADD CONSTRAINT chat_fk7 FOREIGN KEY(user_id) REFERENCES user(user_id);

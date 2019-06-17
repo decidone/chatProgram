@@ -325,7 +325,7 @@ namespace ChatServer
                 rdr.Close();
 
                 int roomNum = Convert.ToInt32(str_Temp);
-                sql = "INSERT INTO chat_user VALUES('" + roomNum + "','" + des_json.user_id + "', '1')";
+                sql = "INSERT INTO chat_user VALUES('" + roomNum + "','" + des_json.user_id + "', '1', null)";
                 cmd = new MySqlCommand(sql, MainForm.conn);
                 cmd.ExecuteNonQuery();
                 
@@ -359,7 +359,7 @@ namespace ChatServer
             MainForm.conn.Open();
             try
             {
-                String sql = "INSERT INTO chat_user VALUES('" + des_json.room_num + "', '" + des_json.friend_id + "', '0')";
+                String sql = "INSERT INTO chat_user VALUES('" + des_json.room_num + "', '" + des_json.friend_id + "', '0', null)";
                 MySqlCommand cmd = new MySqlCommand(sql, MainForm.conn);
                 cmd.ExecuteNonQuery();
                 //Print(des_json.room_num.ToString());
