@@ -9,16 +9,16 @@
       Title="Menu">
 
     <Grid>
-        <Button x:Name="newchat" Content="새 채팅방" HorizontalAlignment="Left" Margin="50,39,0,0" VerticalAlignment="Top" Width="75" Click="Newchat_Click"/>
-        <ListView Margin="152,38,409,87" x:Name="chat_room_list" MouseDoubleClick="double_click">
+        <Button x:Name="newchat" Content="새 채팅방" HorizontalAlignment="Left" Margin="50,35,0,0" VerticalAlignment="Top" Width="100" Click="Newchat_Click" Height="35"/>
+        <ListView Margin="183,35,378,89.6" x:Name="chat_room_list" MouseDoubleClick="double_click">
             <ListView.View>
                 <GridView>
                     <GridViewColumn x:Name="sel" Header="Chat Room" Width="120" DisplayMemberBinding="{Binding chat_room}" />
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button x:Name="friend" Content="친구목록" HorizontalAlignment="Left" Margin="50,64,0,0" VerticalAlignment="Top" Width="75" Click="Friend_Click"/>
-        <Button x:Name="mypage" Content="정보관리" HorizontalAlignment="Left" Margin="50,89,0,0" VerticalAlignment="Top" Width="75" Click="Mypage_Click"/>
-        <Button x:Name="logout" Content="로그아웃" HorizontalAlignment="Left" Margin="50,313,0,0" VerticalAlignment="Top" Width="75" Click="logout_Click"/>
+        <Button x:Name="friend" Content="친구목록" HorizontalAlignment="Left" Margin="50,91,0,0" VerticalAlignment="Top" Width="100" Click="Friend_Click" Height="35"/>
+        <Button x:Name="mypage" Content="정보관리" HorizontalAlignment="Left" Margin="50,146,0,0" VerticalAlignment="Top" Width="100" Click="Mypage_Click" Height="35"/>
+        <Button x:Name="logout" Content="로그아웃" HorizontalAlignment="Left" Margin="50,204,0,0" VerticalAlignment="Top" Width="100" Click="logout_Click" Height="35"/>
     </Grid>
 </Page>

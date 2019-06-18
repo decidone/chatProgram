@@ -9,10 +9,10 @@
       Title="Friend">
 
     <Grid>
-        <TextBox x:Name="sel_friend" HorizontalAlignment="Left" Height="23" Margin="284,66,0,0" TextWrapping="Wrap" Text="{Binding SelectedItem.friend_id, ElementName=friend_list}" VerticalAlignment="Top" Width="120"/>
-        <Button x:Name="delete_friend" Content="삭제" HorizontalAlignment="Left" Margin="329,94,0,0" VerticalAlignment="Top" Width="75" Click="Delete_friend_Click"/>
-        <TextBox x:Name="new_friend" HorizontalAlignment="Left" Height="23" Margin="284,220,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
-        <Button x:Name="add_friend" Content="친구추가" HorizontalAlignment="Left" Margin="329,248,0,0" VerticalAlignment="Top" Width="75" Click="Add_friend_Click"/>
+        <TextBox x:Name="sel_friend" HorizontalAlignment="Left" Height="26" Margin="295,33,0,0" TextWrapping="Wrap" Text="{Binding SelectedItem.friend_id, ElementName=friend_list}" VerticalAlignment="Top" Width="120"/>
+        <Button x:Name="delete_friend" Content="삭제" HorizontalAlignment="Left" Margin="295,64,0,0" VerticalAlignment="Top" Width="120" Click="Delete_friend_Click" Height="30"/>
+        <TextBox x:Name="new_friend" HorizontalAlignment="Left" Height="26" Margin="295,130,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <Button x:Name="add_friend" Content="친구추가" HorizontalAlignment="Left" Margin="295,161,0,0" VerticalAlignment="Top" Width="120" Click="Add_friend_Click" Height="30"/>
 
         <ListView Margin="28,33,533,92" x:Name="friend_list">
             <ListView.View>
@@ -21,6 +21,6 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button x:Name="menu" Content="메뉴로" HorizontalAlignment="Left" Margin="329,338,0,0" VerticalAlignment="Top" Width="75" Click="Menu_Click"/>
+        <Button x:Name="menu" Content="메뉴로" HorizontalAlignment="Left" Margin="295,227,0,0" VerticalAlignment="Top" Width="120" Click="Menu_Click" Height="30"/>
     </Grid>
 </Page>
