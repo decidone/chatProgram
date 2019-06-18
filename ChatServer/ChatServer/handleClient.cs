@@ -488,7 +488,7 @@ namespace ChatServer
                 cmd.ExecuteNonQuery();
 
                 DataSet ds = new DataSet();
-                sql = "SELECT user_id, chat_message, chat_time, (SELECT COUNT(DISTINCT chat_user.user_id) FROM chat, chat_user WHERE chat.room_num = chat_user.room_num AND chat.chat_num > chat_user.last_chat AND chat.room_num = '" + des_json.room_num + "') AS 'not_read' FROM chat where room_num = '" + des_json.room_num + "'";
+                sql = "SELECT chat_num AS num, user_id, chat_message, chat_time, (SELECT COUNT(DISTINCT chat_user.user_id) FROM chat, chat_user WHERE chat.room_num = chat_user.room_num AND chat.chat_num > chat_user.last_chat AND chat.room_num = '" + des_json.room_num + "' AND chat_num = num) AS 'not_read' FROM chat where room_num = '" + des_json.room_num + "'";
 
                 //"SELECT user_id, chat_message, chat_time FROM chat WHERE room_num = '" + des_json.room_num + "'";
                 MySqlDataAdapter adpt = new MySqlDataAdapter(sql, MainForm.conn);
@@ -562,7 +562,7 @@ namespace ChatServer
                 }
                 
                 ds = new DataSet();
-                sql = "SELECT user_id, chat_message, chat_time, (SELECT COUNT(DISTINCT chat_user.user_id) FROM chat, chat_user WHERE chat.room_num = chat_user.room_num AND chat.chat_num > chat_user.last_chat AND chat.room_num = '" + des_json.room_num + "') AS 'not_read' FROM chat where room_num = '" + des_json.room_num + "'";
+                sql = "SELECT chat_num AS num, user_id, chat_message, chat_time, (SELECT COUNT(DISTINCT chat_user.user_id) FROM chat, chat_user WHERE chat.room_num = chat_user.room_num AND chat.chat_num > chat_user.last_chat AND chat.room_num = '" + des_json.room_num + "' AND chat_num = num) AS 'not_read' FROM chat where room_num = '" + des_json.room_num + "'";
 
                 adpt = new MySqlDataAdapter(sql, MainForm.conn);
                 adpt.Fill(ds, "chat");
