@@ -52,7 +52,7 @@ namespace ChatServer
                     string print = "work = " + jobj["work"].ToString();
                     Print(print);
 
-                    // 나중에 case문으로 변경할 것
+                    // 나중에 switch문으로 변경할 것
                     if (des_json.work == "login")
                         login(des_json, stream);
                     if (des_json.work == "register")

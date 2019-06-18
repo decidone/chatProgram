@@ -34,19 +34,21 @@
             // richTextBox1
             // 
             this.richTextBox1.Location = new System.Drawing.Point(0, 0);
+            this.richTextBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(362, 469);
+            this.richTextBox1.Size = new System.Drawing.Size(413, 585);
             this.richTextBox1.TabIndex = 0;
             this.richTextBox1.Text = "";
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(362, 470);
+            this.ClientSize = new System.Drawing.Size(414, 588);
             this.Controls.Add(this.richTextBox1);
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "MainForm";
-            this.Text = "Form1";
+            this.Text = "Server";
             this.ResumeLayout(false);
 
         }
