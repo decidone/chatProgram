@@ -100,34 +100,7 @@ namespace ChatServer
         
         private void Print(string text)
         {
-            //string displayMessage = "From client : " + user_name + " : " + message;
-            //DisplayText(displayMessage);
-            //SendMessageAll(message, user_name, true);
             DisplayText(text);
-        }
-
-        public void SendMessageAll(string message, string user_name, bool flag)
-        {
-            foreach (var pair in clientList)
-            {
-                Console.WriteLine(string.Format("tcpclient : {0}", pair));
-
-                TcpClient client = pair.Key as TcpClient;
-                NetworkStream stream = client.GetStream();
-                byte[] buffer = null;
-
-                if (flag)
-                {
-                    buffer = Encoding.Unicode.GetBytes(user_name + " says : " + message);
-                }
-                else
-                {
-                    buffer = Encoding.Unicode.GetBytes(message);
-                }
-
-                stream.Write(buffer, 0, buffer.Length);
-                stream.Flush();
-            }
         }
 
         private void DisplayText(string text)
