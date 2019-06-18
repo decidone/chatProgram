@@ -35,7 +35,7 @@ namespace ChatServer
 
         private void InitSocket()
         {
-            server = new TcpListener(IPAddress.Any, 9999);
+            server = new TcpListener(IPAddress.Any, 3000);
             client = default(TcpClient);
             server.Start();
             DisplayText(">> Server Started");
@@ -49,7 +49,6 @@ namespace ChatServer
                     DisplayText(">> Accept connection from client");
                     
                     clientList.Add(client, null);
-                    //SendMessageAll(user_name + " Joined ", "", false);
                     handleClient h_client = new handleClient();
                     h_client.Print += new handleClient.MessageDisplayHandler(Print);
                     h_client.OnDisconnected += new handleClient.DisconnectedHandler(h_client_OnDisconnected);

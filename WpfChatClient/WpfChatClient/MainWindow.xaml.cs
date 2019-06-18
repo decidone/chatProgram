@@ -33,7 +33,7 @@ namespace WpfChatClient
         {
             InitializeComponent();
             frame.Source = new Uri("Login.xaml", UriKind.Relative);
-            client.Connect("127.0.0.1", 9999);
+            client.Connect("127.0.0.1", 3000);
             stream = client.GetStream();
             
             tr = new Thread(GetJSON);
